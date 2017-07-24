@@ -36,6 +36,8 @@ RUN wget https://github.com/openminted/uc-tdm-AS-C/archive/master.zip && \
     mv /as-c/resources/yatea.dtd /as-c/ && \
     unzip /as-c/resources/taxa+id_full.zip -d /as-c/resources/ && \
     unzip /as-c/resources/taxid_microorganisms.zip -d /as-c/resources/ && \
+    mv resources/OntoBiotope-v53j.obo resources/OntoBiotope.obo && \
+    mv resources/OntoBiotope-Phenotype-v2.obo resources/OntoBiotope-Phenotype.obo && \
     rm -r uc-tdm-AS-C-master
 
 # Preprocess resources

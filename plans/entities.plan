@@ -59,7 +59,7 @@
 
     <module id="geo-layer" class="Action">
       <target>documents.sections.layer:stanford[@stanford-label == "LOCATION" and not (outside:taxa or span:taxa or inside:taxa)]</target>
-      <action>add:Geographical|set:feat:type("Geographical")|set:feat:concept-id("&ontobiotope-root;")|set:feat:concept-name("geographical location")|set:feat:concept-path("/&ontobiotope-root;/&ontobiotope-geo;")</action>
+      <action>add:Geographical|set:feat:type("Geographical")|set:feat:concept-id("OBT:000000")|set:feat:concept-name("geographical location")|set:feat:concept-path("/OBT:000000/OBT:002448")</action>
       <addToLayer/>
       <setFeatures/>
     </module>
@@ -217,7 +217,7 @@
     <import file="plans/tomap-habitats.plan"/>
 
     <module id="remove-overlapping-geo" class="Action">
-      <target>documents.sections.layer:Geographical[outside:habitats[@concept-path ?= "&ontobiotope-geo;"] or span:habitats or inside:habitats[@concept-path ?= "&ontobiotope-geo;"]]</target>
+      <target>documents.sections.layer:Geographical[outside:habitats[@concept-path ?= "OBT:002448"] or span:habitats or inside:habitats[@concept-path ?= "OBT:002448"]]</target>
       <action>delete</action>
       <deleteElements/>
     </module>

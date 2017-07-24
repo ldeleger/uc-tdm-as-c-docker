@@ -6,14 +6,14 @@
     <targetLayerName>habitats</targetLayerName>
     <conceptFeature>concept-id</conceptFeature>
     <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-    <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/&ontobiotope;.tomap</tomapClassifier>
+    <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-cut.tomap</tomapClassifier>
     <lemmaKeys/>
     <subject layer="words" feature="lemma"/>
     <scoreFeature>score</scoreFeature>
   </module>
 
   <module id="concept-names" class="OBOMapper">
-    <oboFiles>resources/&ontobiotope;.obo</oboFiles>
+    <oboFiles>resources/OntoBiotope-cut.obo</oboFiles>
     <idKeys/>
     <target>documents.sections.layer:habitats</target>
     <form>@concept-id</form>
@@ -29,14 +29,14 @@
       <targetLayerName>habitats2</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/&ontobiotope;.tomap</tomapClassifier>
+      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-cut.tomap</tomapClassifier>
       <lemmaKeys/>
       <subject layer="words" feature="lemma2"/>
       <scoreFeature>score</scoreFeature>
     </module>
 
     <module id="concept-names" class="OBOMapper">
-      <oboFiles>resources/&ontobiotope;.obo</oboFiles>
+      <oboFiles>resources/OntoBiotope-cut.obo</oboFiles>
       <idKeys/>
       <target>documents.sections.layer:habitats2</target>
       <form>@concept-id</form>
@@ -61,13 +61,13 @@
       <targetLayerName>habitats3</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/&ontobiotope;.tomap</tomapClassifier>
+      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-cut.tomap</tomapClassifier>
       <subject layer="words" feature="lemma"/>
       <scoreFeature>score</scoreFeature>
     </module>
 
     <module id="concept-names" class="OBOMapper">
-      <oboFiles>resources/&ontobiotope;.obo</oboFiles>
+      <oboFiles>resources/OntoBiotope-cut.obo</oboFiles>
       <idKeys/>
       <target>documents.sections.layer:habitats3</target>
       <form>@concept-id</form>
@@ -92,14 +92,14 @@
       <targetLayerName>habitats4</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/&ontobiotope;.tomap</tomapClassifier>
+      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-cut.tomap</tomapClassifier>
       <lemmaKeys/>
       <subject layer="words" feature="variant"/>
       <scoreFeature>score</scoreFeature>
     </module>
 
     <module id="concept-names" class="OBOMapper">
-      <oboFiles>resources/&ontobiotope;.obo</oboFiles>
+      <oboFiles>resources/OntoBiotope-cut.obo</oboFiles>
       <idKeys/>
       <target>documents.sections.layer:habitats4</target>
       <form>@concept-id</form>
@@ -124,13 +124,13 @@
       <targetLayerName>habitats5</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/&ontobiotope;.tomap</tomapClassifier>
+      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-cut.tomap</tomapClassifier>
       <subject layer="words" feature="form"/>
       <scoreFeature>score</scoreFeature>
     </module>
 
     <module id="concept-names" class="OBOMapper">
-      <oboFiles>resources/&ontobiotope;.obo</oboFiles>
+      <oboFiles>resources/OntoBiotope-cut.obo</oboFiles>
       <idKeys/>
       <target>documents.sections.layer:habitats5</target>
       <form>@concept-id</form>
@@ -523,7 +523,7 @@
 
 <!-- Add concept-path in case some are missing -->
     <module id="concept-path" class="OBOMapper">
-      <oboFiles>resources/&ontobiotope;.obo</oboFiles>
+      <oboFiles>resources/OntoBiotope-cut.obo</oboFiles>
       <idKeys/>
       <target>documents.sections.layer:habitats</target>
       <form>@concept-id</form>
