@@ -89,13 +89,6 @@
   <sectionFilter>@syno=="true"</sectionFilter>
   </module>
 
-  <module id="tt2" class="TreeTagger">
-    <sectionFilter>@syno=="true"</sectionFilter>
-    <treeTaggerExecutable>/projet/mig/work/textemig/software/tree-tagger-3.2/bin/tree-tagger</treeTaggerExecutable>
-    <parFile>/projet/mig/work/textemig/software/tree-tagger-3.2/lib/english.par</parFile>
-    <noUnknownLemma/>
-  </module>
-
   <genia-2 class="GeniaTagger">
     <sectionFilter>@syno=="true"</sectionFilter>
     <geniaDir>/opt/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
