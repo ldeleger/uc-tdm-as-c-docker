@@ -30,7 +30,6 @@
       <fileName>"doc-mesh.txt"</fileName>
       <lines>documents.sections:mesh</lines>
       <columns separator=";">
-	"&batch;";
 	document.@id;
 	@UI;
 	@mesh-name;
@@ -44,7 +43,6 @@
       <fileName>"taxa.txt"</fileName>
       <lines>documents.sections.layer:taxa</lines>
       <columns separator=";">
-    	"&batch;";
     	section.document.@id;
     	section.@name;
     	start ^ "-" ^ end;
@@ -62,7 +60,6 @@
       <fileName>"microorganisms.txt"</fileName>
       <lines>documents.sections.layer:microorganism</lines>
       <columns separator=";">
-    	"&batch;";
     	section.document.@id;
     	section.@name;
     	start ^ "-" ^ end;
@@ -80,7 +77,6 @@
       <fileName>"bacteria.txt"</fileName>
       <lines>documents.sections.layer:bacteria</lines>
       <columns separator=";">
-    	"&batch;";
     	section.document.@id;
     	section.@name;
     	start ^ "-" ^ end;
@@ -98,7 +94,6 @@
       <fileName>"habitats.txt"</fileName>
       <lines>documents.sections.layer:habitats</lines>
       <columns separator=";">
-    	"&batch;";
     	section.document.@id;
     	section.@name;
     	start ^ "-" ^ end;
@@ -118,7 +113,6 @@
       <fileName>"phenotypes.txt"</fileName>
       <lines>documents.sections.layer:phenotypes</lines>
       <columns separator=";">
-    	"&batch;";
     	section.document.@id;
     	section.@name;
     	start ^ "-" ^ end;
@@ -138,7 +132,6 @@
       <fileName>"geo.txt"</fileName>
       <lines>documents.sections.layer:Geographical</lines>
       <columns separator=";">
-    	"&batch;";
     	section.document.@id;
     	section.@name;
     	start ^ "-" ^ end;
@@ -152,7 +145,6 @@
       <fileName>"relations.txt"</fileName>
       <lines>documents.sections.relations:CooccurrenceLocalization.tuples</lines>
       <columns separator=";">
-    	"&batch;";
     	section.document.@id;
     	section.@name;
     	args:Bacterium.@taxid;
@@ -166,36 +158,36 @@
       </columns>
     </module>
 
-    <rdf class="RDFExport">
-      <outDir>&outdir;</outDir>
-      <files>$</files>
-      <fileName>"&batch;.ttl"</fileName>
-      <format>turtle</format>
-      <prefixes>
-    	OBT=http://bibliome.jouy.inra.fr/OntoBiotope#,
-    	obta=http://bibliome.jouy.inra.fr/OntoBiotope/Annotation#,
-    	pmid=https://www.ncbi.nlm.nih.gov/pubmed/,
-    	taxid=https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=
-      </prefixes>
-      <statements separator=";">
-    	documents.sections.layer.uri:set(obta^id:unique);
+    <!-- <rdf class="RDFExport"> -->
+    <!--   <outDir>&outdir;</outDir> -->
+    <!--   <files>$</files> -->
+    <!--   <fileName>"&batch;.ttl"</fileName> -->
+    <!--   <format>turtle</format> -->
+    <!--   <prefixes> -->
+    <!-- 	OBT=http://bibliome.jouy.inra.fr/OntoBiotope#, -->
+    <!-- 	obta=http://bibliome.jouy.inra.fr/OntoBiotope/Annotation#, -->
+    <!-- 	pmid=https://www.ncbi.nlm.nih.gov/pubmed/, -->
+    <!-- 	taxid=https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id= -->
+    <!--   </prefixes> -->
+    <!--   <statements separator=";"> -->
+    <!-- 	documents.sections.layer.uri:set(obta^id:unique); -->
 
-    	documents.sections.layer[@taxid].(
-    	stmt:res(rdf:type, taxid^@taxid)
-    	| stmt:res(obta:document, pmid^section.document.@id)
-    	| stmt:str(obta:form, @form)
-    	);
+    <!-- 	documents.sections.layer[@taxid].( -->
+    <!-- 	stmt:res(rdf:type, taxid^@taxid) -->
+    <!-- 	| stmt:res(obta:document, pmid^section.document.@id) -->
+    <!-- 	| stmt:str(obta:form, @form) -->
+    <!-- 	); -->
 	
-    	documents.sections.layer[@concept-id].(
-    	stmt:res(rdf:type, OBT^str:after:':'(@concept-id))
-    	| stmt:res(obta:document, pmid^section.document.@id)
-    	| stmt:str(obta:form, @form)
-    	);
+    <!-- 	documents.sections.layer[@concept-id].( -->
+    <!-- 	stmt:res(rdf:type, OBT^str:after:':'(@concept-id)) -->
+    <!-- 	| stmt:res(obta:document, pmid^section.document.@id) -->
+    <!-- 	| stmt:str(obta:form, @form) -->
+    <!-- 	); -->
 
-    	documents.sections.relations:CooccurrenceLocalization.tuples as l.args:Bacterium.
-    	stmt:res(OBT:lives_in, obta^l.args:Localization.id:unique)
-      </statements>
-    </rdf>
+    <!-- 	documents.sections.relations:CooccurrenceLocalization.tuples as l.args:Bacterium. -->
+    <!-- 	stmt:res(OBT:lives_in, obta^l.args:Localization.id:unique) -->
+    <!--   </statements> -->
+    <!-- </rdf> -->
 
     <sequence id="dependencies">
       <module id="index-words" class="Action">
@@ -318,24 +310,24 @@
       <setFeatures/>
     </module>
     
-    <module id="index" class="AlvisDBIndexer">
-      <indexDir>&outdir;/adb</indexDir>
-      <elements>
-  	<relations>
-  	  <items>documents.sections.relations:CooccurrenceLocalization.tuples[args:Bacterium[@bacteria == "true"]]</items>
-  	  <id>"&batch;_" ^ id:unique</id>
-  	  <name>"Localization"</name>
-  	  <type>"localization"</type>
-  	  <args>args:Bacterium|args:Localization</args>
-  	  <arg-id>if @taxid then @taxid else @concept-id</arg-id>
-  	  <arg-name>if @taxid then @canonical-name else @concept-name</arg-name>
-  	  <ancestors>nav:features:ancestors</ancestors>
-  	  <ancestor-id>@value</ancestor-id>
-  	  <arg-doc>section.document.@id</arg-doc>
-  	  <arg-sec>section.@name</arg-sec>
-  	</relations>
-      </elements>
-    </module>
+    <!-- <module id="index" class="AlvisDBIndexer"> -->
+    <!--   <indexDir>&outdir;/adb</indexDir> -->
+    <!--   <elements> -->
+    <!-- 	<relations> -->
+    <!-- 	  <items>documents.sections.relations:CooccurrenceLocalization.tuples[args:Bacterium[@bacteria == "true"]]</items> -->
+    <!-- 	  <id>"&batch;_" ^ id:unique</id> -->
+    <!-- 	  <name>"Localization"</name> -->
+    <!-- 	  <type>"localization"</type> -->
+    <!-- 	  <args>args:Bacterium|args:Localization</args> -->
+    <!-- 	  <arg-id>if @taxid then @taxid else @concept-id</arg-id> -->
+    <!-- 	  <arg-name>if @taxid then @canonical-name else @concept-name</arg-name> -->
+    <!-- 	  <ancestors>nav:features:ancestors</ancestors> -->
+    <!-- 	  <ancestor-id>@value</ancestor-id> -->
+    <!-- 	  <arg-doc>section.document.@id</arg-doc> -->
+    <!-- 	  <arg-sec>section.@name</arg-sec> -->
+    <!-- 	</relations> -->
+    <!--   </elements> -->
+    <!-- </module> -->
   </sequence>
 
   <module id="index" class="AlvisIRIndexer">
