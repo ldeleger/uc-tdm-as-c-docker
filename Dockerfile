@@ -39,5 +39,5 @@ RUN wget https://github.com/openminted/uc-tdm-AS-C/archive/master.zip && \
     rm -r uc-tdm-AS-C-master
 
 # Preprocess resources
-RUN plans/preprocess_ontobiotopes.sh OntoBiotope-v53j
+RUN plans/preprocess_ontobiotope.sh OntoBiotope-v53j
 RUN alvisnlp -verbose -entity ontofile OntoBiotope-Phenotype-v2.obo -entity outfile OntoBiotope-Phenotype-v2.tomap plans/phenotype_ontology_analyzer.plan
