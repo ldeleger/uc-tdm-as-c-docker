@@ -1,7 +1,7 @@
 <alvisnlp-plan id="ontology-analyzer">
 
   <module id="read-obo" class="OBOReader">
-    <oboFiles>&ontofile;</oboFiles>
+    <oboFiles>resources/&ontofile;</oboFiles>
     <pathFeature>path</pathFeature>
   </module>
 
