@@ -33,8 +33,8 @@ WORKDIR /as-c
 RUN wget https://github.com/openminted/uc-tdm-AS-C/archive/master.zip && \
     unzip master.zip && \
     mkdir resources && \
-    cp uc-tdm-AS-C-master/resources/* /as-d/resources && \
-    mv /as-d/resources/yatea.dtd /as-d/ && \
+    cp uc-tdm-AS-C-master/resources/* /as-c/resources && \
+    mv /as-c/resources/yatea.dtd /as-c/ && \
     unzip /as-c/resources/taxa+id_full.zip -d /as-c/resources/ && \
     unzip /as-c/resources/taxid_microorganisms.zip -d /as-c/resources/ && \
     rm -r uc-tdm-AS-C-master
