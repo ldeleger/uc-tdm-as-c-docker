@@ -113,7 +113,7 @@
       <target>documents.sections.layer:taxa</target>
       <form>@taxid</form>
       <!--<operator>prefix</operator>-->
-      <mappingFile>/projet/mig/save/textemig/projet-work/resources/ncbi-taxonomy/taxid_microorganisms.txt</mappingFile>
+      <mappingFile>resources/taxid_microorganisms.txt</mappingFile>
       <!--<mappingFile>resources/microorganisms.txt</mappingFile>-->
       <targetFeatures>microorganism</targetFeatures>
     </module>

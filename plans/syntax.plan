@@ -19,22 +19,20 @@
 
 
     <!-- Use CCGPOS tagger for the POS tags -->
-    <module class="CCGPosTagger" id="ccg_pos">
-      <executable>/projet/mig/save/textemig/projet-work/software/install/CCG/bin/pos</executable>
-      <model>/projet/mig/save/textemig/projet-work/software/install/CCG/models/pos_bio-1.00</model>
-    </module>
+    <!-- <module class="CCGPosTagger" id="ccg_pos"> -->
+    <!--   <executable>/projet/mig/save/textemig/projet-work/software/install/CCG/bin/pos</executable> -->
+    <!--   <model>/projet/mig/save/textemig/projet-work/software/install/CCG/models/pos_bio-1.00</model> -->
+    <!-- </module> -->
 
     <!-- Syntactic Parsing -->
-    <module class="CCGParser" id="ccg">
-      <sectionFilter>@name != "author"</sectionFilter>
-      <executable>/projet/mig/save/textemig/projet-work/software/install/CCG/bin/parser</executable>
-      <parserModel>/projet/mig/save/textemig/projet-work/software/install/CCG/models/parser</parserModel>
-      <superModel>/projet/mig/save/textemig/projet-work/software/install/CCG/models/super_bio-1.00</superModel>
-      <!--<param name="relationName" value="ccg_dependencies"/>-->
-      <!-- CCG (value=false) or AG (value=true) -->
-      <maxRuns>10</maxRuns>
-      <lpTransformation>true</lpTransformation>
-    </module>
+    <!-- <module class="CCGParser" id="ccg"> -->
+    <!--   <sectionFilter>@name != "author"</sectionFilter> -->
+    <!--   <executable>/projet/mig/save/textemig/projet-work/software/install/CCG/bin/parser</executable> -->
+    <!--   <parserModel>/projet/mig/save/textemig/projet-work/software/install/CCG/models/parser</parserModel> -->
+    <!--   <superModel>/projet/mig/save/textemig/projet-work/software/install/CCG/models/super_bio-1.00</superModel> -->
+    <!--   <maxRuns>10</maxRuns> -->
+    <!--   <lpTransformation>true</lpTransformation> -->
+    <!-- </module> -->
 
   </sequence>
 
