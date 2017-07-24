@@ -1,0 +1,251 @@
+<alvisnlp-plan id="entities">
+
+  <sequence id="organisms">
+    <module id="dict" class="SimpleProjector2">
+      <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
+      <targetLayerName>taxa</targetLayerName>
+      <dictFile>resources/taxa+id_full.txt</dictFile>
+      <matchStartCaseInsensitive/>
+      <valueFeatures>,taxid,canonical-name,path,pos,rank</valueFeatures>
+      <constantAnnotationFeatures>source=NCBI</constantAnnotationFeatures>
+    </module>
+
+    <module id="overlaps" class="RemoveOverlaps">
+      <layerName>taxa</layerName>
+    </module>
+
+    <sequence id="microorganisms">
+      <module id="taxids" class="FileMapper2">
+    	<target>documents.sections.layer:taxa</target>
+    	<form>@taxid</form>
+	<mappingFile>resources/taxid_microorganisms.txt</mappingFile>
+      	<targetFeatures>microorganism</targetFeatures>
+      </module>
+      
+      <module id="layer" class="Action">
+    	<target>documents.sections.layer:taxa[@microorganism]</target>
+    	<action>add:microorganism</action>
+    	<addToLayer/>
+      </module>
+    </sequence>
+  
+    <module id="bacteria" class="Action">
+      <target>documents.sections.layer:taxa[@microorganism and @path ^= "/1/131567/2/"]</target>
+      <action>set:feat:bacteria("true")|add:bacteria</action>
+      <setFeatures/>
+      <addToLayer/>
+    </module>
+    
+    <import file="plans/strains-1.plan"/>
+  </sequence>
+
+<!-- Project stopwords -->
+<module id="stopwordsprojector" class="SimpleProjector2">
+  <dictFile>resources/stopwords_EN.txt</dictFile>
+  <targetLayerName>stopwords</targetLayerName>
+  <valueFeatures>stopwords</valueFeatures>
+  <constantAnnotationFeatures>ne-type=stopwords</constantAnnotationFeatures>
+  <caseInsensitive>true</caseInsensitive>
+</module>
+
+  <sequence id="geo">
+    <module id="stanford" class="StanfordNER">
+      <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
+      <classifierFile>/opt/alvisnlp/psoft/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz</classifierFile>
+      <labelFeatureName>stanford-label</labelFeatureName>
+      <targetLayerName>stanford</targetLayerName>
+      <searchInContents/>
+    </module>
+
+    <module id="geo-layer" class="Action">
+      <target>documents.sections.layer:stanford[@stanford-label == "LOCATION" and not (outside:taxa or span:taxa or inside:taxa)]</target>
+      <action>add:Geographical|set:feat:type("Geographical")|set:feat:concept-id("&ontobiotope-root;")|set:feat:concept-name("geographical location")|set:feat:concept-path("/&ontobiotope-root;/&ontobiotope-geo;")</action>
+      <addToLayer/>
+      <setFeatures/>
+    </module>
+  </sequence>
+
+  <import file="plans/syntax.plan" id="syntax"/>
+
+  <genia class="GeniaTagger">
+    <geniaDir>/opt/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
+    <pos>tt_pos</pos>
+    <lemma>lemma</lemma>
+    <chunk>chunk</chunk>
+    <entity>genia-entity</entity>
+  </genia>
+
+  <!-- Adapt Genia's POS tags to match Treetagger's -->
+  <module id="adapt-have-auxiliary" class="Action">
+    <target>documents.sections.layer:words[@tt_pos =~ "^VB" and @lemma == "have"]</target>
+    <action>set:feat:tt_pos(str:seds(@tt_pos,"^VB","VH"))</action>
+    <setFeatures/>
+  </module>
+
+  <module id="adapt-regular-verbs" class="Action">
+    <target>documents.sections.layer:words[@tt_pos =~ "^VB" and @lemma != "be"]</target>
+    <action>set:feat:tt_pos(str:seds(@tt_pos,"^VB","VV"))</action>
+    <setFeatures/>
+  </module>
+
+  <module id="adapt-proper-nouns" class="Action">
+    <target>documents.sections.layer:words[@tt_pos =~ "^NNP"]</target>
+    <action>set:feat:tt_pos(str:seds(@tt_pos,"^NNP","NP"))</action>
+    <setFeatures/>
+  </module>
+
+  <module id="adapt-pronouns" class="Action">
+    <target>documents.sections.layer:words[@tt_pos =~ "^PRP"]</target>
+    <action>set:feat:tt_pos(str:seds(@tt_pos,"^PRP","PP"))</action>
+    <setFeatures/>
+  </module>
+
+  <module id="add-end-of-sentences" class="Action">
+    <target>documents.sections.layer:words[@tt_pos == "." and end == outside:sentences.end]</target>
+    <action>set:feat:tt_pos("SENT")</action>
+    <setFeatures/>
+  </module>
+
+  <import file="plans/strains-2.plan"/>
+
+  <sequence id="microorganisms-after-strains">
+    <module id="taxids" class="FileMapper2">
+      <target>documents.sections.layer:taxa</target>
+      <form>@taxid</form>
+      <!--<operator>prefix</operator>-->
+      <mappingFile>/projet/mig/save/textemig/projet-work/resources/ncbi-taxonomy/taxid_microorganisms.txt</mappingFile>
+      <!--<mappingFile>resources/microorganisms.txt</mappingFile>-->
+      <targetFeatures>microorganism</targetFeatures>
+    </module>
+    
+    <module id="layer" class="Action">
+      <target>documents.sections.layer:taxa[@microorganism]</target>
+      <action>add:microorganism</action>
+      <addToLayer/>
+    </module>
+  </sequence>
+  
+  <module id="bacteria-after-strains" class="Action">
+    <target>documents.sections.layer:taxa[@microorganism and @path ^= "/1/131567/2/"]</target>
+    <action>set:feat:bacteria("true")|add:bacteria</action>
+    <setFeatures/>
+    <addToLayer/>
+  </module>
+
+  <!-- Detect abbreviations -->
+  <abbrev class="Ab3P">
+    <installDir>/opt/alvisnlp/psoft/Ab3P-v1.5</installDir>
+	<!-- layers: 'short-forms', 'long-forms' -->
+	<!-- in 'short-forms', feature 'long-form' -->
+	<!-- relations: 'abbreviations', roles 'short-form', 'long-form' -->
+  </abbrev>
+
+  <!-- Term Extraction -->
+
+  <term-extraction>
+
+    <!-- Modify some pos tags and lemma in order to maximize term extraction-->
+    <import file="plans/pos-tag-lemma-postprocessing.plan"/>
+    
+    <!-- Remove final 's' and lower case words to take care of potential lemmatization errors -->
+    <module id="remove-plural" class="Action">
+      <target>documents.sections.layer:words[str:len(@form) > 1]</target>
+      <action>set:feat:lemma2(str:seds(str:lower(@lemma),"s$",""))</action>
+      <setFeatures/>
+    </module>
+    <module id="remove-plural-2" class="Action">
+      <target>documents.sections.layer:words[@lemma2 == ""]</target>
+      <action>set:feat:lemma2(str:lower(@lemma))</action>
+      <setFeatures/>
+    </module>
+
+    <!-- Project variant lexicon on words and add variant feature -->
+    <module id="variant-projection" class="SimpleProjector2">
+      <dictFile>resources/noun_adj_and_spelling_variants</dictFile>
+      <targetLayerName>variants</targetLayerName>
+      <keyIndex>0</keyIndex>
+      <valueFeatures>string,variant</valueFeatures>
+      <subject layer="words" feature="lemma"/>
+    </module>
+    <module id="del-variants" class="Action">
+      <target>documents.sections.layer:variants[@variant =~ "-"]</target>
+      <action>delete</action>
+      <deleteElements/>
+    </module>
+    <module id="remove-variant-overlaps" class="RemoveOverlaps">
+      <param name="layerName" value="variants"/>
+    </module>
+    <module id="add-variants" class="Action">
+      <target>documents.sections.layer:words[span:variants and @tt_pos == "JJ"]</target>
+      <action>set:feat:variant(span:variants.@variant)</action>
+      <setFeatures/>
+    </module>
+    <module id="add-variants-2" class="Action">
+      <target>documents.sections.layer:words[@variant == ""]</target>
+      <action>set:feat:variant(@lemma)</action>
+      <setFeatures/>
+    </module>
+
+    <!-- Run Yatea term extractor -->
+    <module id="yatea" class="YateaExtractor">
+      <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
+      <workingDir>&outdir;/yatea</workingDir>
+      <posFeature>tt_pos</posFeature>
+      <configDir>/as-c/resources/config-habitats/</configDir>
+      <localeDir>/usr/share/YaTeA/locale</localeDir>
+      <yateaExecutable>/usr/local/bin/yatea</yateaExecutable>
+      <rcFile>plans/yatea.rc</rcFile>
+    </module>
+
+    <!-- Run Yatea term extractor on variants -->
+    <module id="yatea-var" class="YateaExtractor">
+      <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
+      <workingDir>&outdir;/yatea-var</workingDir>
+      <!--<yateaExecutable>/usr/local/public/perl-5.18.0/bin/yatea</yateaExecutable>-->
+      <posFeature>tt_pos</posFeature>
+      <lemmaFeature>variant</lemmaFeature>
+      <configDir>/as-c/resources/config-habitats/</configDir>
+      <localeDir>/usr/share/YaTeA/locale</localeDir>
+      <yateaExecutable>/usr/local/bin/yatea</yateaExecutable>
+      <rcFile>plans/yatea.rc</rcFile>
+    </module>
+
+  </term-extraction>
+
+  <!-- Tag and normalize Habitat entities -->
+  <sequence id="habitats">
+    <import file="plans/tomap-habitats.plan"/>
+
+    <module id="remove-overlapping-geo" class="Action">
+      <target>documents.sections.layer:Geographical[outside:habitats[@concept-path ?= "&ontobiotope-geo;"] or span:habitats or inside:habitats[@concept-path ?= "&ontobiotope-geo;"]]</target>
+      <action>delete</action>
+      <deleteElements/>
+    </module>
+
+    <!-- Remove habitats overlapping with microorganism -->
+    <module id="remove-overlapping-tax" class="Action">
+      <target>documents.sections.layer:habitats[span:microorganism]</target>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
+    </module>
+
+    <module id="merge-geo-habitats" class="MergeLayers">
+      <sourceLayerNames>Geographical,habitats</sourceLayerNames>
+      <targetLayerName>locations</targetLayerName>
+    </module>
+
+  </sequence>
+
+  <!-- Tag and normalize Phenotypes entities -->
+  <import file="plans/tomap-microbial-phenotypes.plan"/>
+
+  <!-- Filter entities spanning stopwords -->
+  <module id="stopwords" class="Action">
+    <target>documents.sections.layer:habitats[span:stopwords] | documents.sections.layer:Geographical[span:stopwords] | documents.sections.layer:locations[span:stopwords] | documents.sections.layer:microorganism[span:stopwords] | documents.sections.layer:bacteria[span:stopwords]| documents.sections.layer:phenotypes[span:stopwords]</target>
+    <action>delete</action>
+    <deleteElements/>
+  </module>
+
+
+ 
+</alvisnlp-plan>
