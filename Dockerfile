@@ -32,6 +32,7 @@ COPY plans /as-c/plans/
 WORKDIR /as-c    
 RUN wget https://github.com/openminted/uc-tdm-AS-C/archive/master.zip && \
     unzip master.zip && \
+    mkdir resources && \
     cp uc-tdm-AS-C-master/resources/* /as-d/resources && \
     mv /as-d/resources/yatea.dtd /as-d/ && \
     unzip /as-c/resources/taxa+id_full.zip -d /as-c/resources/ && \
