@@ -276,20 +276,18 @@
     
   </disambiguation-rules>
 
-<rule-for-food-corpus>
-   <module id="tag-overlap-food" class="Action">
-      <!-- <target>documents.sections.layer:habitats[not @concept-path =~ "OBT:000003/"]</target> -->
-      <target>documents[@id in "corpus/&corpus;/food-pmids.txt"].sections.layer:habitats[not @concept-path =~ "OBT:000003/"]</target>
-      <action>set:feat:overlap-food(span:habitats[@score == target.@score and @concept-path =~ "OBT:000003/"])</action>
-      <setFeatures/>
-    </module>
-   <module id="remove-overlap-food" class="Action">
-     <target>documents[@id in "corpus/&corpus;/food-pmids.txt"].sections.layer:habitats[not @concept-path =~ "OBT:000003/" and not @overlap-food == ""]</target>
-     <!-- <target>documents.sections.layer:habitats[not @concept-path =~ "OBT:000003/" and not @overlap-food == ""]</target> -->
-      <action>remove:habitats</action>
-      <removeFromLayer/>
-    </module>
-</rule-for-food-corpus>
+<!-- <rule-for-food-corpus> -->
+<!--    <module id="tag-overlap-food" class="Action"> -->
+<!--       <target>documents[@id in "corpus/&corpus;/food-pmids.txt"].sections.layer:habitats[not @concept-path =~ "OBT:000003/"]</target> -->
+<!--       <action>set:feat:overlap-food(span:habitats[@score == target.@score and @concept-path =~ "OBT:000003/"])</action> -->
+<!--       <setFeatures/> -->
+<!--     </module> -->
+<!--    <module id="remove-overlap-food" class="Action"> -->
+<!--      <target>documents[@id in "corpus/&corpus;/food-pmids.txt"].sections.layer:habitats[not @concept-path =~ "OBT:000003/" and not @overlap-food == ""]</target> -->
+<!--       <action>remove:habitats</action> -->
+<!--       <removeFromLayer/> -->
+<!--     </module> -->
+<!-- </rule-for-food-corpus> -->
 
   <!-- Choose a concept when multiple concepts have been mapped to a term -->
 
