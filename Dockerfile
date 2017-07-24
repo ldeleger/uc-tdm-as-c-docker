@@ -32,8 +32,7 @@ COPY plans /as-c/plans/
 WORKDIR /as-c    
 RUN wget https://github.com/openminted/uc-tdm-AS-C/archive/master.zip && \
     unzip master.zip && \
-    mkdir resources && \
-    cp uc-tdm-AS-C-master/resources/* /as-c/resources && \
+    cp -R uc-tdm-AS-C-master/resources/ /as-c/ && \
     mv /as-c/resources/yatea.dtd /as-c/ && \
     unzip /as-c/resources/taxa+id_full.zip -d /as-c/resources/ && \
     unzip /as-c/resources/taxid_microorganisms.zip -d /as-c/resources/ && \
