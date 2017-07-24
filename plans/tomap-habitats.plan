@@ -158,7 +158,7 @@
 
   <!-- Remove geographical locations -->
   <module id="delete-geo" class="Action">
-    <target>documents.sections.layer:habitats[@concept-path ?= "&ontobiotope-geo;"]</target>
+    <target>documents.sections.layer:habitats[@concept-path ?= "OBT:002448"]</target>
     <action>delete</action>
     <deleteElements/>
   </module>  
