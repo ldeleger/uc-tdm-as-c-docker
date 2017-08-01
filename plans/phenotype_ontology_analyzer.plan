@@ -1,4 +1,4 @@
-x<alvisnlp-plan id="ontology-analyzer">
+<alvisnlp-plan id="ontology-analyzer">
 
   <module id="read-obo" class="OBOReader">
     <oboFiles>resources/&ontofile;</oboFiles>
