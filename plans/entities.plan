@@ -51,7 +51,7 @@
   <sequence id="geo">
     <module id="stanford" class="StanfordNER">
       <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
-      <classifierFile>/alvisnlp/psoft/stanford-ner-3.4/classifiers/english.all.3class.distsim.crf.ser.gz</classifierFile>
+      <classifierFile>/alvisnlp/psoft/stanford-ner-2014-06-16/classifiers/english.all.3class.distsim.crf.ser.gz</classifierFile>
       <labelFeatureName>stanford-label</labelFeatureName>
       <targetLayerName>stanford</targetLayerName>
       <searchInContents/>
