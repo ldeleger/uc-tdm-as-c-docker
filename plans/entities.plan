@@ -51,7 +51,7 @@
   <sequence id="geo">
     <module id="stanford" class="StanfordNER">
       <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
-      <classifierFile>/opt/alvisnlp/psoft/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz</classifierFile>
+      <classifierFile>/alvisnlp/psoft/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz</classifierFile>
       <labelFeatureName>stanford-label</labelFeatureName>
       <targetLayerName>stanford</targetLayerName>
       <searchInContents/>
@@ -68,11 +68,11 @@
   <import file="plans/syntax.plan" id="syntax"/>
 
   <genia class="GeniaTagger">
-    <geniaDir>/opt/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
-    <pos>tt_pos</pos>
-    <lemma>lemma</lemma>
-    <chunk>chunk</chunk>
-    <entity>genia-entity</entity>
+    <geniaDir>/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
+    <posFeature>tt_pos</posFeature>
+    <lemmaFeature>lemma</lemmaFeature>
+    <chunkFeature>chunk</chunkFeature>
+    <entityFeature>genia-entity</entityFeature>
   </genia>
 
   <!-- Adapt Genia's POS tags to match Treetagger's -->
@@ -134,7 +134,7 @@
 
   <!-- Detect abbreviations -->
   <abbrev class="Ab3P">
-    <installDir>/opt/alvisnlp/psoft/Ab3P-v1.5</installDir>
+    <installDir>/alvisnlp/psoft/Ab3P-v1.5</installDir>
 	<!-- layers: 'short-forms', 'long-forms' -->
 	<!-- in 'short-forms', feature 'long-form' -->
 	<!-- relations: 'abbreviations', roles 'short-form', 'long-form' -->

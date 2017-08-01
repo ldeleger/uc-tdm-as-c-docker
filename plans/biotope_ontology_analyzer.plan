@@ -9,11 +9,11 @@
   <module id="sentences" class="SeSMig"/>
 
   <genia class="GeniaTagger">
-    <geniaDir>/opt/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
-    <pos>pos</pos>
-    <lemma>lemma</lemma>
-    <chunk>chunk</chunk>
-    <entity>entity</entity>
+    <geniaDir>/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
+    <posFeature>pos</posFeature>
+    <lemmaFeature>lemma</lemmaFeature>
+    <chunkFeature>chunk</chunkFeature>
+    <entityFeature>entity</entityFeature>
   </genia>
 
   <!-- Adapt Genia's POS tags to match Treetagger's -->
@@ -91,11 +91,11 @@
 
   <genia-2 class="GeniaTagger">
     <sectionFilter>@syno=="true"</sectionFilter>
-    <geniaDir>/opt/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
-    <pos>pos</pos>
-    <lemma>lemma</lemma>
-    <chunk>chunk</chunk>
-    <entity>entity</entity>
+    <geniaDir>/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
+    <posFeature>pos</posFeature>
+    <lemmaFeature>lemma</lemmaFeature>
+    <chunkFeature>chunk</chunkFeature>
+    <entityFeature>entity</entityFeature>
   </genia-2>
 
   <!-- Adapt Genia's POS tags to match Treetagger's -->

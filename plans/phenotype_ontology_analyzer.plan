@@ -1,4 +1,4 @@
-<alvisnlp-plan id="ontology-analyzer">
+x<alvisnlp-plan id="ontology-analyzer">
 
   <module id="read-obo" class="OBOReader">
     <oboFiles>resources/&ontofile;</oboFiles>
@@ -9,11 +9,11 @@
   <module id="sentences" class="SeSMig"/>
 
   <genia class="GeniaTagger">
-    <geniaDir>/opt/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
-    <pos>pos</pos>
-    <lemma>lemma</lemma>
-    <chunk>chunk</chunk>
-    <entity>entity</entity>
+    <geniaDir>/alvisnlp/psoft/geniatagger-3.0.2</geniaDir>
+    <posFeature>pos</posFeature>
+    <lemmaFeature>lemma</lemmaFeature>
+    <chunkFeature>chunk</chunkFeature>
+    <entityFeature>entity</entityFeature>
   </genia>
 
   <!-- Adapt Genia's POS tags to match Treetagger's -->
