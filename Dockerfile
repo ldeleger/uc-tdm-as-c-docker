@@ -1,6 +1,8 @@
 # Pull AlvisNLP image
 FROM bibliome/alvisengine:2.0.0
 
+WORKDIR /alvisnlp/psoft
+
 # Get obo-utils
 RUN git clone https://github.com/Bibliome/obo-utils.git
 
