@@ -1,16 +1,5 @@
 # Pull AlvisNLP image
-FROM bibliome/alvisengine
-
-# Get StanfordNER 2014-06-16*
-WORKDIR /opt/alvisnlp/psoft
-RUN wget https://nlp.stanford.edu/software/stanford-ner-2014-06-16.zip && \
-    unzip stanford-ner-2014-06-16 && \
-    mv stanford-ner-2014-06-16 stanford-ner && \
-    rm stanford-ner-2014-06-16.zip
-
-# Get Yatea
-RUN cpan App::cpanminus
-RUN cpanm Lingua::YaTeA
+FROM bibliome/alvisengine:2.0.0
 
 # Get obo-utils
 RUN git clone https://github.com/Bibliome/obo-utils.git
