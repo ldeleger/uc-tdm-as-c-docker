@@ -330,12 +330,12 @@
     <setFeatures/>
   </module>
   <module id="remove-abb" class="Action">
-    <target>documents.sections.layer:phenotypes[span:short-forms[not @concept-id == ""]]</target>
+    <target>documents.sections.layer:phenotypes[span:short-forms[not @concept-id == "" and not @concept-id =~ "^OBT"]]</target>
     <action>delete</action>
     <deleteElements/>
   </module>
   <module id="add-abb" class="Action">
-    <target>documents.sections.layer:short-forms[not @concept-id == ""]</target>
+    <target>documents.sections.layer:short-forms[not @concept-id == "" and not @concept-id =~ "^OBT"]</target>
     <action>set:feat:selected("true") | add:phenotypes</action>
     <addToLayer/>
     <setFeatures/>

@@ -511,12 +511,12 @@
   </module>
    <module id="remove-abb" class="Action">
       <target>documents.sections.layer:habitats[span:short-forms[not @concept-id == ""]]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
   </module>
   <module id="add-abb" class="Action">
       <target>documents.sections.layer:short-forms[not @concept-id == ""]</target>
-      <action>set:feat:selected("true") | add:habitats</action>
+      <action>set:feat:selected("true") | add:habitats |remove:short-forms</action>
       <addToLayer/>
       <setFeatures/>
   </module>
