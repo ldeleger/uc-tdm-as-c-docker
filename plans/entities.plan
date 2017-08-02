@@ -1,4 +1,4 @@
-<alvisnlp-plan id="entities">
+x<alvisnlp-plan id="entities">
 
   <sequence id="organisms">
     <module id="dict" class="SimpleProjector2">
@@ -59,7 +59,7 @@
 
     <module id="geo-layer" class="Action">
       <target>documents.sections.layer:stanford[@stanford-label == "LOCATION" and not (outside:taxa or span:taxa or inside:taxa)]</target>
-      <action>add:Geographical|set:feat:type("Geographical")|set:feat:concept-id("OBT:000000")|set:feat:concept-name("geographical location")|set:feat:concept-path("/OBT:000000/OBT:002448")</action>
+      <action>add:Geographical|set:feat:type("Geographical")|set:feat:concept-id("OBT:002448")|set:feat:concept-name("geographical location")|set:feat:concept-path("/OBT:000000/OBT:002448")</action>
       <addToLayer/>
       <setFeatures/>
     </module>
