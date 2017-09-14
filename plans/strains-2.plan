@@ -134,33 +134,33 @@
     
     
     
-    <module id="resistentPattern1" class="PatternMatcher">
-      <layerName>words</layerName>
-      <pattern>
-	[true]
-	[@form=~"^Resistant" or @form=~"^resistant"]
-	(bact:
-	  [@microorganism]
-	)
-      </pattern>
-      <actions>
-	<createAnnotation layer="resistent" features="taxid=group:bact.@taxid,canonical-name=group:bact.@canonical-name,path=group:bact.@path,rank=group:bact.@rank"/>
-      </actions>
-    </module>
+    <!-- <module id="resistentPattern1" class="PatternMatcher"> -->
+    <!--   <layerName>words</layerName> -->
+    <!--   <pattern> -->
+    <!-- 	[true] -->
+    <!-- 	[@form=~"^Resistant" or @form=~"^resistant"] -->
+    <!-- 	(bact: -->
+    <!-- 	  [@microorganism] -->
+    <!-- 	) -->
+    <!--   </pattern> -->
+    <!--   <actions> -->
+    <!-- 	<createAnnotation layer="resistent" features="taxid=group:bact.@taxid,canonical-name=group:bact.@canonical-name,path=group:bact.@path,rank=group:bact.@rank"/> -->
+    <!--   </actions> -->
+    <!-- </module> -->
     
     
-    <module id="resistentPattern2" class="PatternMatcher">
-      <layerName>words</layerName>
-      <pattern>
-	[@form=~"^[A-Za-z]+-resistant$" or @form=~"^[A-Za-z]+-Resistant$"]
-	(bact:
-	  [@microorganism]
-	)
-      </pattern>
-      <actions>
-	<createAnnotation layer="resistent" features="taxid=group:bact.@taxid,canonical-name=group:bact.@canonical-name,path=group:bact.@path,rank=group:bact.@rank"/>
-      </actions>
-    </module>
+    <!-- <module id="resistentPattern2" class="PatternMatcher"> -->
+    <!--   <layerName>words</layerName> -->
+    <!--   <pattern> -->
+    <!-- 	[@form=~"^[A-Za-z]+-resistant$" or @form=~"^[A-Za-z]+-Resistant$"] -->
+    <!-- 	(bact: -->
+    <!-- 	  [@microorganism] -->
+    <!-- 	) -->
+    <!--   </pattern> -->
+    <!--   <actions> -->
+    <!-- 	<createAnnotation layer="resistent" features="taxid=group:bact.@taxid,canonical-name=group:bact.@canonical-name,path=group:bact.@path,rank=group:bact.@rank"/> -->
+    <!--   </actions> -->
+    <!-- </module> -->
     
     
     <module id="sspPattern1" class="PatternMatcher">
