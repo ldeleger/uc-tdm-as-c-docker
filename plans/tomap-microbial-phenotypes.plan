@@ -6,7 +6,7 @@
     <targetLayerName>phenotypes</targetLayerName>
     <conceptFeature>concept-id</conceptFeature>
     <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-    <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
+    <tomapClassifier whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
     <lemmaKeys/>
     <subject layer="words" feature="lemma"/>
     <scoreFeature>score</scoreFeature>
@@ -29,7 +29,7 @@
       <targetLayerName>phenotypes2</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
+      <tomapClassifier whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
       <lemmaKeys/>
       <subject layer="words" feature="lemma2"/>
       <scoreFeature>score</scoreFeature>
@@ -61,7 +61,7 @@
       <targetLayerName>phenotypes3</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
+      <tomapClassifier whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
       <subject layer="words" feature="lemma"/>
       <scoreFeature>score</scoreFeature>
     </module>
@@ -93,7 +93,7 @@
       <targetLayerName>phenotypes4</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
+      <tomapClassifier whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
       <lemmaKeys/>
       <subject layer="words" feature="variant"/>
       <scoreFeature>score</scoreFeature>
@@ -125,7 +125,7 @@
       <targetLayerName>phenotypes5</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
-      <tomapClassifier graylist="resources/graylist_extended.heads" whole-proxy-distance="false">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
+      <tomapClassifier whole-proxy-distance="false" empty-words="resources/stopwords_EN.ttg">resources/OntoBiotope-Phenotype.tomap</tomapClassifier>
       <subject layer="words" feature="form"/>
       <scoreFeature>score</scoreFeature>
     </module>
@@ -206,6 +206,13 @@
     <target>documents.sections.layer:phenotypes</target>
     <action>set:feat:included(@full-head != "" and (@concept-name == @full-head or @explain_concept-synonym == @full-head))</action>
     <setFeatures/>
+  </module>
+
+ <!-- Remove terms with blacklisted syntactic heads -->
+  <module id="delete-blacklisted-heads" class="Action">
+    <target>documents.sections.layer:phenotypes[@explain_significant-head in "resources/blacklisted-phenotype-heads.txt" and not (@concept-name =~ " " and @lemma-string ?= @concept-name)]</target>
+    <action>delete</action>
+    <deleteElements/>
   </module>
 
 <!-- Choose a concept when multiple concepts have been mapped to a term -->
