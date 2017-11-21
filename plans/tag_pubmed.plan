@@ -112,7 +112,6 @@
       <fileName>"phenotype-relations.txt"</fileName>
       <lines>documents.sections.relations:PhenotypeRelation.tuples</lines>
       <columns separator=";">
-    	"&batch;";
     	section.document.@id;
     	section.@name;
     	args:Microorganism.@taxid;
