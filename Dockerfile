@@ -33,3 +33,4 @@ RUN wget https://github.com/openminted/uc-tdm-AS-C/archive/master.zip && \
 # Preprocess resources
 RUN plans/preprocess_ontobiotope.sh OntoBiotope
 
+
