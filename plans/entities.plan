@@ -1,4 +1,4 @@
-x<alvisnlp-plan id="entities">
+<alvisnlp-plan id="entities">
 
   <sequence id="organisms">
     <module id="dict" class="SimpleProjector2">
