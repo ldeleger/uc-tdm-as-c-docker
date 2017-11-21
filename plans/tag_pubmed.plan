@@ -107,7 +107,7 @@
     </module>
 
     <module id="relations-pheno" class="TabularExport">
-      <outDir>corpus/&corpus;/batch/&batch;</outDir>
+      <outDir>&outdir;</outDir>
       <files>$</files>
       <fileName>"phenotype-relations.txt"</fileName>
       <lines>documents.sections.relations:PhenotypeRelation.tuples</lines>
