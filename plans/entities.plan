@@ -48,6 +48,14 @@ x<alvisnlp-plan id="entities">
   <caseInsensitive>true</caseInsensitive>
 </module>
 
+<module id="stopwordsprojector-microorganism" class="SimpleProjector2">
+  <dictFile>resources/microorganism_stopwords.txt</dictFile>
+  <targetLayerName>microorganism-stopwords</targetLayerName>
+  <valueFeatures>stopwords</valueFeatures>
+  <constantAnnotationFeatures>ne-type=stopwords</constantAnnotationFeatures>
+  <caseInsensitive>true</caseInsensitive>
+</module>
+
   <sequence id="geo">
     <module id="stanford" class="StanfordNER">
       <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
@@ -138,6 +146,13 @@ x<alvisnlp-plan id="entities">
     <addToLayer/>
   </module>
 
+  <!-- Detect measurement units -->
+  <module id="measurement-units" class="Action">
+    <target>documents.sections.layer:words[@lemma =~ "^(km|m|cm|mm|kg|g|cg|mg|L|l|mmol|mmolL|°C)[\\u207B\\u00B9\\u00B2\\u00B3\\u2074\\u2075\\u2076\\u2077\\u2078\\u2079\\u2070\\d]*$"]</target>
+    <action>add:units</action>
+    <addToLayer/>
+  </module>
+
   <!-- Detect abbreviations -->
   <abbrev class="Ab3P">
     <installDir>/alvisnlp/psoft/Ab3P-v1.5</installDir>
@@ -145,6 +160,34 @@ x<alvisnlp-plan id="entities">
 	<!-- in 'short-forms', feature 'long-form' -->
 	<!-- relations: 'abbreviations', roles 'short-form', 'long-form' -->
   </abbrev>
+
+  <!-- Project process lexicon -->
+
+  <module id="dict" class="SimpleProjector2">
+    <targetLayerName>food-process</targetLayerName>
+    <dictFile>resources/food-process-lexicon.txt</dictFile>
+    <matchStartCaseInsensitive/>
+    <keyIndex>0,1,2</keyIndex>
+    <valueFeatures>string,token,lem,concept-id</valueFeatures>
+    <subject layer="words" feature="lemma"/>
+  </module>
+  <module id="dict-2" class="SimpleProjector2">
+    <targetLayerName>food-process2</targetLayerName>
+    <dictFile>resources/food-process-lexicon.txt</dictFile>
+    <matchStartCaseInsensitive/>
+    <keyIndex>0,1,2</keyIndex>
+    <valueFeatures>string,token,lem,concept-id</valueFeatures>
+    <subject layer="words" feature="form"/>
+  </module>
+  <module id="add-process" class="Action">
+    <target>documents.sections.layer:food-process2[not span:food-process]</target>
+    <action>add:food-process</action>
+    <addToLayer/>
+  </module>
+
+  <module id="overlaps" class="RemoveOverlaps">
+    <layerName>food-process</layerName>
+  </module>
 
   <!-- Term Extraction -->
 
@@ -222,6 +265,12 @@ x<alvisnlp-plan id="entities">
   <sequence id="habitats">
     <import file="plans/tomap-habitats.plan"/>
 
+    <module id="remove-living-org-overlapping-geo" class="Action">
+      <target>documents.sections.layer:habitats[@concept-path ?= "OBT:000002" and span:Geographical]</target>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
+    </module>
+
     <module id="remove-overlapping-geo" class="Action">
       <target>documents.sections.layer:Geographical[outside:habitats[@concept-path ?= "OBT:002448"] or span:habitats or inside:habitats[@concept-path ?= "OBT:002448"]]</target>
       <action>delete</action>
@@ -247,11 +296,44 @@ x<alvisnlp-plan id="entities">
 
   <!-- Filter entities spanning stopwords -->
   <module id="stopwords" class="Action">
-    <target>documents.sections.layer:habitats[span:stopwords] | documents.sections.layer:Geographical[span:stopwords] | documents.sections.layer:locations[span:stopwords] | documents.sections.layer:microorganism[span:stopwords] | documents.sections.layer:bacteria[span:stopwords]| documents.sections.layer:phenotypes[span:stopwords]</target>
+    <target>documents.sections.layer:habitats[span:stopwords] | documents.sections.layer:Geographical[span:stopwords] | documents.sections.layer:locations[span:stopwords] | documents.sections.layer:microorganism[span:stopwords or span:microorganism-stopwords] | documents.sections.layer:bacteria[span:stopwords]| documents.sections.layer:phenotypes[span:stopwords]</target>
     <action>delete</action>
     <deleteElements/>
   </module>
+ <module id="remove-short-microorganism-1" class="Action">
+    <target>documents.sections.layer:microorganism[@form =~ "^..?$"]</target>
+    <action>set:feat:to-remove(not section.document.sections.layer:microorganism[@canonical-name == target.@canonical-name and not @form =~ "^..?$"])</action>
+    <setFeatures/>
+  </module>
+ <module id="remove-short-microorganism-2" class="Action">
+    <target>documents.sections.layer:microorganism[@to-remove == "true"]</target>
+    <action>remove:microorganism</action>
+    <removeFromLayer/>
+  </module>
 
+ <module id="remove-microorganism-spanning-units" class="Action">
+    <target>documents.sections.layer:microorganism[outside:units]</target>
+    <action>remove:microorganism</action>
+    <removeFromLayer/>
+ </module>
+
+<!-- Get lemmatized form -->
+  <module id="get-CD-lemmas" class="Action">
+    <target>documents.sections.layer:words[@lemma == "@card@"]</target>
+    <action>set:feat:lemma(@form)</action>
+    <setFeatures/>
+  </module>
+  <module id="get-lemmas-for-entities" class="Action">
+    <target>documents.sections.(layer:habitats|layer:Geographical|layer:microorganism|layer:bacteria|layer:phenotypes)</target>
+    <action>set:feat:lemma-string(str:join(overlapping:words[start != target.end and end != target.start],@lemma," "))</action>
+    <setFeatures/>
+  </module>
+
+  <module id="get-lemmas-for-entities-2" class="Action">
+    <target>documents.sections.(layer:habitats[@lemma-string == ""]|layer:Geographical[@lemma-string == ""]|layer:microorganism[@lemma-string == ""]|layer:bacteria[@lemma-string == ""]|layer:phenotypes[@lemma-string == ""])</target>
+    <action>set:feat:lemma-string(@lemma)</action>
+    <setFeatures/>
+  </module>
 
  
 </alvisnlp-plan>

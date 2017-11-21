@@ -149,19 +149,46 @@
 
  <!-- Postprocessing -->
 
+  <!-- Remove entities with certain characters -->
+  <module id="delete-char" class="Action">
+    <target>documents.sections.layer:habitats[@form =~ "^[~\\#\\*\\%\\u00D7=]" or @form =~ "\\#\\d+$" or @form =~ "\\-\\-" or start == overlapping:units{0}.start]</target>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
+  </module>
+
+  <module id="delete-unbalanced-parenthesis" class="Action">
+    <target>documents.sections.layer:habitats[@form =~ "^[^\\(]*\\([^\\)]+$"]</target>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
+  </module>
+
   <!-- Remove bacteria names -->
   <module id="delete-bacteria" class="Action">
     <target>documents.sections.layer:habitats[@form == "bacteria" or @form == "bacterium" or @explain_significant-head == "bacteria" or @explain_significant-head == "bacterium"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
+  </module>
+
+  <!-- Remove microorganism -->
+  <module id="delete-micro" class="Action">
+    <target>documents.sections.layer:habitats[@lemma == "microorganism" or @concept-name == "microorganism"]</target>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
   </module>
 
   <!-- Remove geographical locations -->
   <module id="delete-geo" class="Action">
     <target>documents.sections.layer:habitats[@concept-path ?= "OBT:002448"]</target>
-    <action>delete</action>
-    <deleteElements/>
-  </module>  
+    <action>remove:habitats</action>
+    <removeFromLayer/>
+  </module>
+
+  <!-- Remove water activity -->
+  <module id="delete-water" class="Action">
+    <target>documents.sections.layer:habitats[@lemma == "water" and after:words{0}.@lemma == "activity"]</target>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
+  </module>
 
   <!-- Projet BioYatea results -->
   <module id="bioyatea-projection" class="YateaProjector">
@@ -223,16 +250,16 @@
 
   <!-- Remove terms with blacklisted syntactic heads -->
   <module id="delete-blacklisted-heads" class="Action">
-    <target>documents.sections.layer:habitats[@explain_significant-head in "resources/blacklisted-heads.txt" and not (@concept-name =~ " " and @lemma-string ?= @concept-name)]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <target>documents.sections.layer:habitats[@explain_significant-head in "resources/blacklisted-heads.txt" and not (@concept-name =~ " " and (str:lower(@lemma-string) ?= str:lower(@concept-name) or @score == "1.0"))]</target>
+    <action>remove:habitats</action>
+      <removeFromLayer/>
   </module>
 
   <!-- cell wall -->
   <module id="delete-wall" class="Action">
     <target>documents.sections.layer:habitats[@lemma-string =~ "(cell wall|cell-wall|cell - wall)"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+      <removeFromLayer/>
   </module>
 
   <!-- specific rules to disambiguate certain terms -->
@@ -241,40 +268,57 @@
     <!-- Attempt to disambiguate "plant" -->
     <module id="delete-plant-tion" class="Action">
       <target>documents.sections.layer:habitats[@lemma-string =~ "tion plant" and @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045)" and not @lemma-string =~ "(resurrection|generation|carnation|accumulation)" ]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
     <module id="delete-plant-tion-2" class="Action">
-      <target>documents.sections.layer:habitats[@lemma-string =~ "(power|electric|electricity) generation plant" and @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045)"]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <target>documents.sections.layer:habitats[@lemma-string =~ "(power|electric|electricity) generation plant" and @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045|OBT:000003)"]</target>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
     <module id="delete-plant-ing" class="Action">
-      <target>documents.sections.layer:habitats[@form =~ "ing plant" and @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045)" and not @form =~ "(living|demanding|degrading|flowering|accumulating|nodulating|expressing|overexpressing|promising|inhabiting|fixing|floating|neighboring|offspring|sibling|hyperaccumulating|watering|controlling|growing)"]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <target>documents.sections.layer:habitats[@form =~ "ing plant" and @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045|OBT:000003)" and not @form =~ "(living|demanding|degrading|flowering|accumulating|nodulating|expressing|overexpressing|promising|inhabiting|fixing|floating|neighboring|offspring|sibling|hyperaccumulating|watering|controlling|growing)"]</target>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
     <module id="delete-plant-others" class="Action">
-      <target>documents.sections.layer:habitats[@lemma-string =~ " plant" and @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045)" and @lemma-string =~ "(pilot|sludge|dairy|biogas|industrial|gas|poultry|chicken|meat|ice cream|coke|cheese|commercial|biodiesel|petrochemical|biofuel|steel|removal|pesticide|petroleum|textile|sheep|beef|nitrogen|ethanol|fish|dye|filter|AD|truck repair|aerobic)"]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <target>documents.sections.layer:habitats[@lemma-string =~ " plant" and @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045|OBT:000003)" and @lemma-string =~ "(pilot|sludge|dairy|biogas|industrial|gas|poultry|chicken|meat|ice cream|coke|cheese|commercial|biodiesel|petrochemical|biofuel|steel|removal|pesticide|petroleum|textile|sheep|beef|nitrogen|ethanol|fish|dye|filter|AD|truck repair|aerobic)"]</target>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
 
     <!-- disambiguate single term "nodule" -->
     <module id="disambiguate-nodule" class="Action">
       <target>documents.sections.layer:habitats[@head-string == "nodule" and not @score == 1 and @concept-path =~ "OBT:000349" and not section.layer:habitats[@concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045|OBT:000041)" and not @lemma-string =~ "nodule"]]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
 
     <!-- serum : choose "blood serum" by default -->
     <module id="disambiguate-serum" class="Action">
       <target>documents.sections.layer:habitats[@head-string == "serum" and not @score == 1 and not @concept-id == "OBT:000571"]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
     
   </disambiguation-rules>
+
+  <!-- Get food entities -->
+  <module id="get-food-process" class="Action">
+    <target>documents.sections.layer:habitats[nav:features:concept-path[@value =~ "/OBT:000208/"]]</target>
+    <action>add:all-food-process</action>
+    <addToLayer/>
+  </module>
+  <module id="keep-highest-score" class="Action">
+      <target>documents.sections.layer:all-food-process</target>
+      <action>set:feat:highest(not span:all-food-process[@score > target.@score])</action>
+      <setFeatures/>
+   </module>
+  <module id="delete-not-selected" class="Action">
+      <target>documents.sections.layer:all-food-process[not @highest == "true"]</target>
+      <action>remove:all-food-process</action>
+      <removeFromLayer/>
+   </module>
 
 <!-- <rule-for-food-corpus> -->
 <!--    <module id="tag-overlap-food" class="Action"> -->
@@ -330,8 +374,8 @@
     <!-- delete not selected -->
     <module id="delete-not-selected" class="Action">
       <target>documents.sections.layer:habitats[not @selected == "true"]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
   </sequence>
 
@@ -347,8 +391,8 @@
       </module>
       <module id="delete" class="Action">
 	<target>documents.sections.layer:habitats[@no-parent == "false"]</target>
-	<action>delete</action>
-	<deleteElements/>
+	<action>remove:habitats</action>
+      <removeFromLayer/>
       </module>
     </sequence>
 
@@ -361,8 +405,8 @@
       </module>
       <module id="delete" class="Action">
 	<target>documents.sections.layer:habitats[@diff-head == "false"]</target>
-	<action>delete</action>
-	<deleteElements/>
+	<action>remove:habitats</action>
+      <removeFromLayer/>
       </module>
     </sequence>
 
@@ -375,8 +419,8 @@
       </module>
       <module id="delete" class="Action">
 	<target>documents.sections.layer:habitats[@diff-head != "true"]</target>
-	<action>delete</action>
-	<deleteElements/>
+	<action>remove:habitats</action>
+      <removeFromLayer/>
       </module>
     </sequence>
 
@@ -385,22 +429,22 @@
   <!-- remove blacklisted terms -->
   <module id="delete-blacklisted" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and @lemma-string in "resources/blacklist.txt"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
   </module>
 
   <!-- remove single-word terms with certain POS (currently only "VVN")-->
   <module id="delete-VVN" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and span:words.@tt_pos =~ "(VVN|VVZ|VVD|VVP)"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
   </module>
 
   <!-- remove terms with scores under a certain threshold (0.15) -->
   <module id="delete-low-score" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and 0.15 > @score]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
   </module>
 
   <!-- remove certain ambiguities (terms "secretion", "vector") -->
@@ -408,35 +452,35 @@
   <secretion-vector1>
     <module id="delete-secretion" class="Action">
       <target>documents.sections.layer:habitats[@selected == "true" and (@lemma-string =~ "secretion (system|apparatus|machine|machinery)" or @lemma-string=~ "type .+ secretion" or @lemma-string=~ "protein (.+ )?secretion" or @lemma-string=~ "level secretion")]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
   <module id="delete-vectors" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and @lemma-string =~ "(fusion|expression|reporter) vector"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+      <removeFromLayer/>
   </module>
   </secretion-vector1>
 
   <secretion-vector2>
     <module id="delete-secretion" class="Action">
       <target>documents.sections.layer:habitats[@selected == "true" and (@lemma-string=~ "secretion" and overlapping:words[@genia-entity =~ "(protein|RNA|DNA)"])]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
 
     <module id="delete-vectors" class="Action">
       <target>documents.sections.layer:habitats[@selected == "true" and (@lemma-string=~ "vector" and overlapping:words[@genia-entity =~ "(protein|RNA|DNA)"])]</target>
-      <action>delete</action>
-      <deleteElements/>
+      <action>remove:habitats</action>
+      <removeFromLayer/>
     </module>
   </secretion-vector2>
 
   <!-- disambiguate single term "plant" -->
 
   <module id="contextual-disambiguation" class="Action">
-      <target>documents.sections.layer:habitats[@selected == "true" and @lemma-string == "plant" and section.layer:habitats[@selected == "true" and @head-string =~ "plant" and not @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045)"]]</target>
-      <action>set:feat:concept-name(section.layer:habitats[@selected == "true" and @head-string =~ "plant" and not @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045)"]{0}.@concept-name)|set:feat:concept-path(section.layer:habitats[@selected == "true" and @head-string =~ "plant" and not @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045)"]{0}.@concept-path)|set:feat:concept-id(section.layer:habitats[@selected == "true" and @head-string =~ "plant" and not @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045)"]{0}.@concept-id)</action>
+      <target>documents.sections.layer:habitats[@selected == "true" and @lemma-string == "plant" and section.layer:habitats[@selected == "true" and @head-string =~ "plant" and not @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045|OBT:000003)"]]</target>
+      <action>set:feat:concept-name(section.layer:habitats[@selected == "true" and @head-string =~ "plant" and not @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045|OBT:000003)"]{0}.@concept-name)|set:feat:concept-path(section.layer:habitats[@selected == "true" and @head-string =~ "plant" and not @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045|OBT:000003)"]{0}.@concept-path)|set:feat:concept-id(section.layer:habitats[@selected == "true" and @head-string =~ "plant" and not @concept-path =~ "(MBTO:00000294|ID:00000238|OBT:000219|OBT:000045|OBT:000003)"]{0}.@concept-id)</action>
       <setFeatures/>
     </module>
 
@@ -445,30 +489,30 @@
 
   <module id="delete-Ving" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and span:words.@tt_pos=="VVG" and not @concept-name=~ "ing$"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
   </module>
 
 
   <!-- remove "cell" occurring in the context of a bacteria (TO CHECK) -->
   <module id="delete-cell-in-bacteria" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and @concept-name == "cell" and (before:words{-1}.@ne-type=="Bacteria" or before:words{-1}.overlapping:bacteria or before:words{-2}.@ne-type=="Bacteria" or before:words{-2}.overlapping:bacteria or after:words{1}.@ne-type=="Bacteria" or after:words{1}.overlapping:bacteria or after:words{2}.@ne-type=="Bacteria" or after:words{2}.overlapping:bacteria or inside:words[@ne-type == "Bacteria"])]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
   </module>
 
   <!-- remove "gel" in "gel electrophoresis" -->
   <module id="delete-gel" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and @lemma-string == "gel" and after:words{0}.@lemma == "electrophoresis"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
   </module>
 
   <!-- remove "individual", "professional" if adjective -->
   <module id="delete-Xal" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and @lemma-string =~ "^(individual|professional)$" and span:words.@tt_pos=="JJ"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
   </module>
 
    <!-- Deal with "facility" (temporary fix) -->
@@ -481,7 +525,7 @@
 
    <!-- Add taxa that are not microorganisms (as living organisms, for now) -->
    <module id="add-taxa" class="Action">
-    <target>documents.sections.layer:taxa[not @microorganism and not overlapping:habitats and not @canonical-name =~ "(Bacteria|metagenome|plasmid|Viruses|Archaea)" and not @form =~ "\\d+" and not @lemma == "test" and not @path =~ "/10239/"]</target>
+    <target>documents.sections.layer:taxa[not @microorganism and not overlapping:habitats and not @canonical-name =~ "(Bacteria|metagenome|plasmid|Viruses|Archaea)" and not @form =~ "\\d+" and not @lemma == "^(test|Data|data)$" and not @path =~ "/10239/" and not @form =~ "^..?$" and not @form =~ "^[A-Z] \\S+$"]</target>
     <action>add:habitats|set:feat:selected("true")|set:feat:concept-id("OBT:000002")|set:feat:concept-name("living organism")</action>
     <addToLayer/>
     <setFeatures/>
@@ -498,14 +542,14 @@
   <!-- remove terms tagged with concept "microorganism gas vesicle" (to check) -->
   <module id="delete-vesicle" class="Action">
     <target>documents.sections.layer:habitats[@selected == "true" and @concept-name == "microorganism gas vesicle"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:habitats</action>
+      <removeFromLayer/>
   </module>
 
   <!-- Deal with abbreviations -->
 
   <module id="get-concept-id-for-abbreviations" class="Action">
-    <target>documents.sections.layer:short-forms</target>
+    <target>documents.sections.layer:short-forms[not outside:words]</target>
     <action>set:feat:concept-id(str:join:'|'(sort:nsval(tuples:abbreviations:short-form.args:long-form.span:habitats[@selected == "true"],@concept-id),@concept-id)) | set:feat:score(str:join:'|'(sort:nsval(tuples:abbreviations:short-form.args:long-form.span:habitats[@selected == "true"],@concept-id), @score)) | set:feat:concept-name(str:join:'|'(sort:nsval(tuples:abbreviations:short-form.args:long-form.span:habitats[@selected == "true"],@concept-id),@concept-name)) | set:feat:concept-path(str:join:'|'(sort:nsval(tuples:abbreviations:short-form.args:long-form.span:habitats[@selected == "true"],@concept-id),@concept-path))</action>
     <setFeatures/>
   </module>
@@ -520,6 +564,9 @@
       <addToLayer/>
       <setFeatures/>
   </module>
+
+  <!-- Tag food processes -->
+  <import file="plans/tag-food-process.plan"/>
 
 <!-- Add concept-path in case some are missing -->
     <module id="concept-path" class="OBOMapper">

@@ -4,17 +4,17 @@
     <module id="strainPattern1" class="PatternMatcher">
       <layerName>words</layerName>
       <pattern>
-	(bact:
-	  [@microorganism]
-	)
-	[@form=="strain" or @form=="Strain"]
-	(strain:
-	[@subtype=="strain"]
-	)
+    	(bact:
+    	  [@microorganism]
+    	)
+    	[@form=="strain" or @form=="Strain"]
+    	(strain:
+    	[@subtype=="strain"]
+    	)
       </pattern>
       <actions>
-	<createAnnotation layer="strains" features="taxid=group:bact.@taxid,canonical-name=group:bact.@canonical-name,path=group:bact.@path,rank=group:bact.@rank"/>
-	<createAnnotation group="strain" layer="shortNames" features="taxid=group:bact.@taxid,canonical-name=group:bact.@canonical-name,path=group:bact.@path,rank=group:bact.@rank"/>
+    	<createAnnotation layer="strains" features="taxid=group:bact.@taxid,canonical-name=group:bact.@canonical-name,path=group:bact.@path,rank=group:bact.@rank"/>
+    	<createAnnotation group="strain" layer="shortNames" features="taxid=group:bact.@taxid,canonical-name=group:bact.@canonical-name,path=group:bact.@path,rank=group:bact.@rank"/>
       </actions>
     </module>
     
@@ -234,22 +234,6 @@
       <action>remove:newStrains</action>
       <removeFromLayer/>
     </module>
-
-    <!--
-    <module id="extractStrains" class="ExpressionExtract">
-      <target>documents.sections.layer:finalStrains</target>
-      <fields>@form</fields>
-      <outFile>resources/strains.txt</outFile>
-    </module>
-
-    <module id="projectStrains" class="SimpleProjector2">
-      <caseInsensitive/>
-      <valueFeatures>newStrain</valueFeatures>
-      <dictFile inhibitCheck="true">resources/strains.txt</dictFile>
-      <targetLayerName>newStrains</targetLayerName>
-      <constantAnnotationFeatures>type=Bacteria,eos=not-eos,ne-type=species,pos=NP</constantAnnotationFeatures>
-    </module>
-    -->
   </sequence>
 
   <sequence id="appositions">
@@ -289,7 +273,7 @@
     </module>
 
     <module id="projectAppositions" class="ElementProjector2">
-      <caseInsensitive/>
+      <!-- <caseInsensitive/> -->
       <targetLayerName>appos</targetLayerName>
       <entries>documents.sections.layer:appositions</entries>
       <key>@form</key>
@@ -306,25 +290,9 @@
 
     <module id="keep-same-doc-appos" class="Action">
       <target>documents as d.sections.layer:appos[d.@id != @appos-doc-id]</target>
-      <action>remove:newStrains</action>
+      <action>remove:appos</action>
       <removeFromLayer/>
     </module>
-
-    <!--
-    <module id="apposExtractor" class="ExpressionExtract">
-      <target>documents.sections.layer:appositions</target>
-      <fields>@form</fields>
-      <outFile>resources/appos.txt</outFile>
-    </module>
-
-    <module id="projectAppositions" class="SimpleProjector2">
-      <caseInsensitive/>
-      <valueFeatures>strain</valueFeatures>
-      <dictFile inhibitCheck="yes">resources/appos.txt</dictFile>
-      <targetLayerName>appos</targetLayerName>
-      <constantAnnotationFeatures>type=Bacteria,eos=not-eos,ne-type=species,pos=NP</constantAnnotationFeatures>
-    </module>
-    -->
   </sequence>
 
   <!--

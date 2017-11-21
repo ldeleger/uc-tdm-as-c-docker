@@ -150,6 +150,19 @@
 
   <!-- Postprocessing  -->
 
+<!-- Remove entities with certain characters -->
+  <module id="delete-char" class="Action">
+    <target>documents.sections.layer:phenotypes[@form =~ "^[~\\#\\*\\%\\u00D7=]" or @form =~ "\\#\\d+$" or @form =~ "\\-\\-" or start == overlapping:units{0}.start]</target>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
+  </module>
+
+ <module id="delete-unbalanced-parenthesis" class="Action">
+    <target>documents.sections.layer:habitats[@form =~ "^[^\\(]*\\([^\\)]+$"]</target>
+    <action>remove:habitats</action>
+    <removeFromLayer/>
+  </module>
+
   <!-- Projet BioYatea results -->
   <module id="bioyatea-projection" class="YateaProjector">
     <targetLayerName>yateaTerms</targetLayerName>
@@ -210,9 +223,9 @@
 
  <!-- Remove terms with blacklisted syntactic heads -->
   <module id="delete-blacklisted-heads" class="Action">
-    <target>documents.sections.layer:phenotypes[@explain_significant-head in "resources/blacklisted-phenotype-heads.txt" and not (@concept-name =~ " " and @lemma-string ?= @concept-name)]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <target>documents.sections.layer:phenotypes[@explain_significant-head in "resources/blacklisted-phenotype-heads.txt" and not (@concept-name =~ " " and (@lemma-string ?= @concept-name or @score == "1.0"))]</target>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
   </module>
 
 <!-- Choose a concept when multiple concepts have been mapped to a term -->
@@ -256,8 +269,8 @@
   <!-- delete not selected -->
   <module id="delete-not-selected" class="Action">
     <target>documents.sections.layer:phenotypes[not @selected == "true"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
   </module>
   </sequence>
 
@@ -311,35 +324,42 @@
   <!-- remove blacklisted terms -->
   <module id="delete-blacklisted" class="Action">
     <target>documents.sections.layer:phenotypes[@selected == "true" and @lemma-string in "resources/phenotype_blacklist.txt"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
   </module>
 
   <!-- remove single-word terms with certain POS -->
   <module id="delete-POS-tags" class="Action">
     <target>documents.sections.layer:phenotypes[@selected == "true" and span:words.@tt_pos =~ "(VVN|VVZ|VVD|VVP)"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
   </module>
 
   <!-- remove terms with scores under a certain threshold (0.15) -->
   <module id="delete-low-score" class="Action">
     <target>documents.sections.layer:phenotypes[@selected == "true" and 0.15 > @score]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
+  </module>
+
+  <!-- remove conjugating when term is not ending in "ing" -->
+  <module id="delete-conjugate" class="Action">
+    <target>documents.sections.layer:phenotypes[@selected == "true" and @concept-name == "conjugating" and not @form =~ "ing$"]</target>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
   </module>
 
   <!-- Deal with abbreviations -->
 
   <module id="get-concept-id-for-abbreviations" class="Action">
-    <target>documents.sections.layer:short-forms</target>
+    <target>documents.sections.layer:short-forms[not outside:words]</target>
     <action>set:feat:concept-id(str:join:'|'(sort:nsval(tuples:abbreviations:short-form.args:long-form.span:phenotypes[@selected == "true"],@concept-id),@concept-id)) | set:feat:score(str:join:'|'(sort:nsval(tuples:abbreviations:short-form.args:long-form.span:phenotypes[@selected == "true"],@concept-id), @score)) | set:feat:concept-name(str:join:'|'(sort:nsval(tuples:abbreviations:short-form.args:long-form.span:phenotypes[@selected == "true"],@concept-id),@concept-name))</action>
     <setFeatures/>
   </module>
   <module id="remove-abb" class="Action">
     <target>documents.sections.layer:phenotypes[span:short-forms[not @concept-id == "" and not @concept-id =~ "^OBT"]]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
   </module>
   <module id="add-abb" class="Action">
     <target>documents.sections.layer:short-forms[not @concept-id == "" and not @concept-id =~ "^OBT"]</target>
@@ -352,8 +372,8 @@
 
   <module id="delete-generic-phenotypes" class="Action">
     <target>documents.sections.layer:phenotypes[@selected == "true" and @concept-id == "MoPh:00000520"]</target>
-    <action>delete</action>
-    <deleteElements/>
+    <action>remove:phenotypes</action>
+    <removeFromLayer/>
   </module>
 
   <!-- add modifiers occurring before microorganisms -->

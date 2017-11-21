@@ -19,63 +19,24 @@
     <setFeatures/>
   </module>
 
+  <!-- Get year -->
+  <module id="set-year" class="Action">
+    <target>documents[@year == "" and not @date == ""]</target>
+    <action>set:feat:year(str:seds(@date,"^(\\d+) .+$","$1"))</action>
+    <setFeatures/>
+  </module>
+
   <import file="plans/entities.plan"/>
 
   <import file="plans/relations.plan"/>
 
   <sequence id="output">
-    <doc-mesh class="TabularExport">
-      <outDir>&outdir;</outDir>
-      <files>$</files>
-      <fileName>"doc-mesh.txt"</fileName>
-      <lines>documents.sections:mesh</lines>
-      <columns separator=";">
-	document.@id;
-	@UI;
-	@mesh-name;
-	@mesh-path
-      </columns>
-    </doc-mesh>
-
-    <module id="taxa" class="TabularExport">
-      <outDir>&outdir;</outDir>
-      <files>$</files>
-      <fileName>"taxa.txt"</fileName>
-      <lines>documents.sections.layer:taxa</lines>
-      <columns separator=";">
-    	section.document.@id;
-    	section.@name;
-    	start ^ "-" ^ end;
-    	@form;
-    	@taxid;
-    	@canonical-name;
-    	@path;
-    	@rank
-      </columns>
-    </module>
 
     <module id="microorganisms" class="TabularExport">
       <outDir>&outdir;</outDir>
       <files>$</files>
       <fileName>"microorganisms.txt"</fileName>
       <lines>documents.sections.layer:microorganism</lines>
-      <columns separator=";">
-    	section.document.@id;
-    	section.@name;
-    	start ^ "-" ^ end;
-    	@form;
-    	@taxid;
-    	@canonical-name;
-    	@path;
-    	@rank
-      </columns>
-    </module>
-
-    <module id="bacteria" class="TabularExport">
-      <outDir>&outdir;</outDir>
-      <files>$</files>
-      <fileName>"bacteria.txt"</fileName>
-      <lines>documents.sections.layer:bacteria</lines>
       <columns separator=";">
     	section.document.@id;
     	section.@name;
@@ -126,19 +87,6 @@
       </columns>
     </module>
 
-    <module id="geo" class="TabularExport">
-      <outDir>&outdir;</outDir>
-      <files>$</files>
-      <fileName>"geo.txt"</fileName>
-      <lines>documents.sections.layer:Geographical</lines>
-      <columns separator=";">
-    	section.document.@id;
-    	section.@name;
-    	start ^ "-" ^ end;
-    	@form
-      </columns>
-    </module>
-
     <module id="relations" class="TabularExport">
       <outDir>&outdir;</outDir>
       <files>$</files>
@@ -158,176 +106,28 @@
       </columns>
     </module>
 
-    <!-- <rdf class="RDFExport"> -->
-    <!--   <outDir>&outdir;</outDir> -->
-    <!--   <files>$</files> -->
-    <!--   <fileName>"&batch;.ttl"</fileName> -->
-    <!--   <format>turtle</format> -->
-    <!--   <prefixes> -->
-    <!-- 	OBT=http://bibliome.jouy.inra.fr/OntoBiotope#, -->
-    <!-- 	obta=http://bibliome.jouy.inra.fr/OntoBiotope/Annotation#, -->
-    <!-- 	pmid=https://www.ncbi.nlm.nih.gov/pubmed/, -->
-    <!-- 	taxid=https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id= -->
-    <!--   </prefixes> -->
-    <!--   <statements separator=";"> -->
-    <!-- 	documents.sections.layer.uri:set(obta^id:unique); -->
-
-    <!-- 	documents.sections.layer[@taxid].( -->
-    <!-- 	stmt:res(rdf:type, taxid^@taxid) -->
-    <!-- 	| stmt:res(obta:document, pmid^section.document.@id) -->
-    <!-- 	| stmt:str(obta:form, @form) -->
-    <!-- 	); -->
-	
-    <!-- 	documents.sections.layer[@concept-id].( -->
-    <!-- 	stmt:res(rdf:type, OBT^str:after:':'(@concept-id)) -->
-    <!-- 	| stmt:res(obta:document, pmid^section.document.@id) -->
-    <!-- 	| stmt:str(obta:form, @form) -->
-    <!-- 	); -->
-
-    <!-- 	documents.sections.relations:CooccurrenceLocalization.tuples as l.args:Bacterium. -->
-    <!-- 	stmt:res(OBT:lives_in, obta^l.args:Localization.id:unique) -->
-    <!--   </statements> -->
-    <!-- </rdf> -->
-
-    <sequence id="dependencies">
-      <module id="index-words" class="Action">
-  	<target>documents.sections.layer:sentences[@name != "author"]</target>
-  	<action>id:enumerate:word-index(inside:words)</action>
-  	<setFeatures/>
-      </module>
-
-      <module id="index-sentences" class="Action">
-  	<target>documents.sections[@name != "author"]</target>
-  	<action>id:enumerate:sentence-index(layer:sentences)</action>
-  	<setFeatures/>
-      </module>
-
-      <module id="sentences" class="TabularExport">
-  	<outDir>&outdir;</outDir>
-  	<files>$</files>
-  	<fileName>"sentences.txt"</fileName>
-  	<lines>documents.sections.layer:sentences[@name != "author"]</lines>
-  	<columns separator=";">
-  	  section.document.@id;
-  	  section.@name;
-  	  @sentence-index;
-  	  start ^ "-" ^ end;
-  	  str:replace(@form, "\n", " ")
-  	</columns>
-  	<headers>
-  	  "DOCUMENT",
-  	  "SECTION",
-  	  "SENTENCE",
-  	  "OFFSET",
-  	  "FORM"
-  	</headers>
-      </module>
-
-      <module id="anaphora" class="TabularExport">
-  	<outDir>&outdir;</outDir>
-  	<files>$</files>
-  	<fileName>"anaphora.txt"</fileName>
-  	<lines>documents.sections.relations:coreferences.tuples[args:Ante]</lines>
-  	<columns separator=";">
-  	  relation.section.document.@id;
-  	  relation.section.@name;
-  	  args:Anaphora.start;
-  	  args:Anaphora.outside:sentences.@sentence-index;
-  	  args:Anaphora.@form;
-  	  args:Ante.start;
-  	  args:Ante.outside:sentences.@sentence-index;
-  	  args:Ante.@form;
-  	  args:AnteTwo.start;
-  	  args:AnteTwo.outside:sentences.@sentence-index;
-  	  args:AnteTwo.@form
-  	</columns>
-  	<headers>
-  	  "DOCUMENT",
-  	  "SECTION",
-  	  "ANAPHOR OFFSET",
-  	  "ANAPHOR SENTENCE",
-  	  "ANAPHOR FORM",
-  	  "ANTE OFFSET",
-  	  "ANTE SENTENCE",
-  	  "ANTE FORM",
-  	  "ANTE 2 OFFSET",
-  	  "ANTE 2 SENTENCE",
-  	  "ANTE 2 FORM"
-  	</headers>
-      </module>
-
-      <module id="dependencies" class="TabularExport">
-  	<outDir>&outdir;</outDir>
-  	<files>$</files>
-  	<fileName>"dependencies.txt"</fileName>
-  	<lines>documents.sections[@name != "author"].relations:dependencies.tuples</lines>
-  	<columns separator=";">
-  	  relation.section.document.@id;
-  	  relation.section.@name;
-  	  args:sentence.@sentence-index;
-  	  @label;
-  	  args:head.@word-index;
-  	  args:head.@form;
-  	  args:head.@lemma;
-  	  args:head.@pos;
-  	  args:head.start ^ "-" ^ args:head.end;
-  	  args:dependent.@word-index;
-  	  args:dependent.@form;
-  	  args:dependent.@lemma;
-  	  args:dependent.@pos;
-  	  args:dependent.start ^ "-" ^ args:dependent.end
-  	</columns>
-  	<headers>
-  	  "DOCUMENT",
-  	  "SECTION",
-  	  "SENTENCE",
-  	  "LABEL",
-  	  "HEAD INDEX",
-  	  "HEAD FORM",
-  	  "HEAD LEMMA",
-  	  "HEAD POS",
-  	  "HEAD OFFSET",
-  	  "DEPENDENT INDEX",
-  	  "DEPENDENT FORM",
-  	  "DEPENDENT LEMMA",
-  	  "DEPENDENT POS",
-  	  "DEPENDENT OFFSET"
-  	</headers>
-      </module>
-    </sequence>
-  </sequence>
-
-  <sequence id="adb">
-    <module id="taxa-ancestors" class="Action">
-      <target>documents.sections.layer:bacteria</target>
-      <action>re:findall:'[^/]+'(@path, set:feat:ancestors(match:group(0)))</action>
-      <setFeatures/>
+    <module id="relations-pheno" class="TabularExport">
+      <outDir>corpus/&corpus;/batch/&batch;</outDir>
+      <files>$</files>
+      <fileName>"phenotype-relations.txt"</fileName>
+      <lines>documents.sections.relations:PhenotypeRelation.tuples</lines>
+      <columns separator=";">
+    	"&batch;";
+    	section.document.@id;
+    	section.@name;
+    	args:Microorganism.@taxid;
+    	args:Microorganism.@form;
+	args:Microorganism.@lemma-string;
+    	args:Microorganism.@canonical-name;
+    	args:Microorganism.@path;
+    	args:Phenotype.@concept-id;
+    	args:Phenotype.@form;
+	args:Phenotype.@lemma-string;
+    	args:Phenotype.@concept-name;
+    	args:Phenotype.@concept-path
+      </columns>
     </module>
-    
-    <module id="habitat-ancestors" class="Action">
-      <target>documents.sections.layer:habitats</target>
-      <action>re:findall:'[^/]+'(@concept-path, set:feat:ancestors(match:group(0)))</action>
-      <setFeatures/>
-    </module>
-    
-    <!-- <module id="index" class="AlvisDBIndexer"> -->
-    <!--   <indexDir>&outdir;/adb</indexDir> -->
-    <!--   <elements> -->
-    <!-- 	<relations> -->
-    <!-- 	  <items>documents.sections.relations:CooccurrenceLocalization.tuples[args:Bacterium[@bacteria == "true"]]</items> -->
-    <!-- 	  <id>"&batch;_" ^ id:unique</id> -->
-    <!-- 	  <name>"Localization"</name> -->
-    <!-- 	  <type>"localization"</type> -->
-    <!-- 	  <args>args:Bacterium|args:Localization</args> -->
-    <!-- 	  <arg-id>if @taxid then @taxid else @concept-id</arg-id> -->
-    <!-- 	  <arg-name>if @taxid then @canonical-name else @concept-name</arg-name> -->
-    <!-- 	  <ancestors>nav:features:ancestors</ancestors> -->
-    <!-- 	  <ancestor-id>@value</ancestor-id> -->
-    <!-- 	  <arg-doc>section.document.@id</arg-doc> -->
-    <!-- 	  <arg-sec>section.@name</arg-sec> -->
-    <!-- 	</relations> -->
-    <!--   </elements> -->
-    <!-- </module> -->
+
   </sequence>
 
   <module id="index" class="AlvisIRIndexer">
@@ -336,6 +136,7 @@
     <fieldNames>title,abstract,author,full-author,pmid,year,journal,mesh,url</fieldNames>
     <relations>
       <livesin>taxon,habitat</livesin>
+      <exhibits>taxon,phenotype</exhibits>
     </relations>
     <propertyKeys/>
     <documents>
@@ -379,6 +180,28 @@
   	    <habitat>args:Localization.id:unique</habitat>
   	  </arguments>
   	</annotations>
+  	<annotations>
+  	  <instances>relations:PhenotypeRelation.tuples</instances>
+  	  <fragments>
+  	    <instances>sort:ival(args, start)</instances>
+  	  </fragments>
+  	  <text>"{exhibits}{taxon}" ^ args:Microorganism.@path ^ "/~{phenotype}" ^ args:Phenotype.@concept-path ^ "/"</text>
+  	  <arguments>
+  	    <taxon>args:Microorganism.id:unique</taxon>
+  	    <phenotype>args:Phenotype.id:unique</phenotype>
+  	  </arguments>
+  	</annotations>
+  	<annotations>
+  	  <instances>relations:PhenotypeRelation.tuples</instances>
+  	  <fragments>
+  	    <instances>sort:ival(args, start)</instances>
+  	  </fragments>
+  	  <text>"{exhibits}" ^ args:Microorganism.@form ^ "/~" ^ args:Phenotype.@form ^ "/"</text>
+  	  <arguments>
+  	    <taxon>args:Microorganism.id:unique</taxon>
+  	    <phenotype>args:Phenotype.id:unique</phenotype>
+  	  </arguments>
+  	</annotations>
       </fields>
       <fields>
   	<instances>nav:features:mesh-name</instances>
@@ -414,14 +237,6 @@
         <keyword>document.@url</keyword>
       </fields>
     </documents>
-  </module>
-
-  <module id="success" class="TabularExport">
-    <outDir>&outdir;</outDir>
-    <files>$</files>
-    <fileName>"success.txt"</fileName>
-    <lines>documents</lines>
-    <columns>@id</columns>
   </module>
 
 </alvisnlp-plan>

@@ -48,4 +48,37 @@
     </sequence>
   </sequence>
 
+<phenotype-relations>
+
+  <module id="create-relation" class="Action">
+    <target>documents.sections</target>
+    <action>new:relation:PhenotypeRelation</action>
+    <createRelations/>
+  </module>
+
+  <create-tuple class="Action">
+    <target>documents.sections.layer:sentences</target>
+    <action>
+      target.inside:phenotypes as p.
+      target.inside:microorganism as m.
+      section.relations:PhenotypeRelation.new:tuple.(set:arg:Microorganism(m)|set:arg:Phenotype(p))
+    </action>
+    <createTuples/>
+    <setArguments/>
+  </create-tuple>
+
+  <module id="create-tuples-anaphora" class="Action">
+    <target>documents.sections.layer:sentences[not inside:microorganism]</target>
+    <action>
+      inside:anaphora.tuples:coreferences:Anaphora.(args:Ante|args:AnteTwo) as m.
+      target.inside:phenotypes as p.
+      section.relations:PhenotypeRelation.new:tuple.(set:arg:Microorganism(m)|set:arg:Phenotype(p))
+    </action>
+    <createTuples/>
+    <setArguments/>
+  </module>
+
+</phenotype-relations>
+
+
 </alvisnlp-plan>

@@ -9,7 +9,7 @@
       <addToLayer/>
     </module>
 
-    <import>res://org.bibliome.alvisnlp.resources/segmentation.plan</import>
+    <import file="plans/segmentation.plan"/>
   </sequence>
 
 
