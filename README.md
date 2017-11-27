@@ -11,7 +11,7 @@ The test-data folder contains data to run the workflow. More specifically:
 
 To run the workflow (from the folder containing the README):
 
-```docker run -i --rm -v $PWD/test-data/:/as-c/data ldeleger/uc-tdm-as-c-docker alvisnlp -J "-Xmx30g" -entity inputfile /as-c/data/corpus/test.xml -entity outdir /as-c/data/output plans/tag_pubmed.plan```
+```docker run -i --rm -v $PWD/test-data/:/as-c/data ldeleger/uc-tdm-as-c-docker alvisnlp -J "-Xmx30g" -alias input /as-c/data/corpus/test.xml -entity outdir /as-c/data/output plans/tag_pubmed.plan```
 
 ## OpenMinteD metadata
 
