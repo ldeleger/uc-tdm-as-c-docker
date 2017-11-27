@@ -131,8 +131,8 @@
       </ms:languages>
       <ms:parameterInfos>
         <ms:parameterInfo>
-          <ms:parameterName>inputfile</ms:parameterName>
-          <ms:parameterLabel>inputfile</ms:parameterLabel>
+          <ms:parameterName>input</ms:parameterName>
+          <ms:parameterLabel>input</ms:parameterLabel>
           <ms:parameterDescription>Name of the input file containing the corpus (in PubMed XML format)</ms:parameterDescription>
           <ms:parameterType>string</ms:parameterType>
           <ms:optional>false</ms:optional>
