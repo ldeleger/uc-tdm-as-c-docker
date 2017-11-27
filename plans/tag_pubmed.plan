@@ -1,7 +1,11 @@
 <alvisnlp-plan id="entities">
+
+  <param name="input">
+  <alias module="read" param="sourcePath"/>
+  </param>
+  
   <module id="read" class="XMLReader2">
-    <!-- <sourcePath>corpus/&corpus;/batch/&batch;/batch.xml</sourcePath> -->
-    <sourcePath>&inputfile;</sourcePath>
+    <sourcePath>test.xml</sourcePath>
     <xslTransform>plans/microbes-pubmed2alvisnlp.xslt</xslTransform>
   </module>
 
