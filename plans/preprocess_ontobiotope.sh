@@ -13,9 +13,9 @@ ONTOBIOTOPE=$1
 /alvisnlp/psoft/obo-utils/obo-subtree.py --exclude-root OBT:002412 --exclude-root OBT:002325 --exclude-root OBT:002323 --exclude-root OBT:002324 --exclude-root OBT:002448 --exclude-root OBT:000000 --exclude-root MoPh:00000520 resources/$ONTOBIOTOPE-no-obsolete.obo >resources/$ONTOBIOTOPE-Molecule.obo
 
 # 3. Analyze ontologies with tomap
-alvisnlp -cleanTmp -verbose -environmentEntities -entity outfile $ONTOBIOTOPE-Habitat.tomap -entity ontofile $ONTOBIOTOPE-Habitat.obo plans/biotope_ontology_analyzer.plan
+alvisnlp -cleanTmp -verbose -alias input resources/$ONTOBIOTOPE-Habitat.obo -alias output resources/$ONTOBIOTOPE-Habitat.tomap plans/biotope_ontology_analyzer.plan
 
-alvisnlp -cleanTmp -verbose -environmentEntities -entity outfile $ONTOBIOTOPE-Phenotype.tomap -entity ontofile $ONTOBIOTOPE-Phenotype.obo plans/phenotype_ontology_analyzer.plan
+alvisnlp -cleanTmp -verbose -alias input resources/$ONTOBIOTOPE-Phenotype.obo -alias output resources/$ONTOBIOTOPE-Phenotype.tomap plans/phenotype_ontology_analyzer.plan
 
 # 4. obo to json
 /alvisnlp/psoft/obo-utils/obo2json.py --root OBT:000000 resources/$ONTOBIOTOPE-Habitat.obo >resources/$ONTOBIOTOPE-Habitat.json

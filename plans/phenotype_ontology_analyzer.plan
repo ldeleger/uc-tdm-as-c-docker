@@ -1,7 +1,14 @@
 <alvisnlp-plan id="ontology-analyzer">
 
+  <param name="input">
+  <alias module="read-obo" param="oboFiles"/>
+  </param>
+  <param name="output">
+  <alias module="analyze" param="outFile"/>
+  </param>
+
   <module id="read-obo" class="OBOReader">
-    <oboFiles>resources/&ontofile;</oboFiles>
+    <oboFiles>resources/OntoBiotope-Phenotype.obo</oboFiles>
     <pathFeature>path</pathFeature>
   </module>
 
@@ -121,7 +128,7 @@
   </module>
 
   <module id="analyze" class="TomapTrain">
-    <outFile>resources/&outfile;</outFile>
+    <outFile>resources/OntoBiotope-Phenotype.tomap</outFile>
     <workingDir>yatea-train</workingDir>
     <configDir>/as-c/resources/config-habitats/</configDir> 
     <localeDir>/usr/share/YaTeA/locale</localeDir>
