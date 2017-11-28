@@ -133,7 +133,7 @@
     <configDir>/as-c/resources/config-habitats/</configDir> 
     <localeDir>/usr/share/YaTeA/locale</localeDir>
     <yateaExecutable>/usr/local/bin/yatea</yateaExecutable>
-    <rcFile>plans/yatea.rc</rcFile>
+    <rcFile>/as-c/plans/yatea.rc</rcFile>
     <conceptIdentifier>document.@id</conceptIdentifier>
   </module>
 
