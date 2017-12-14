@@ -190,12 +190,12 @@
     <removeFromLayer/>
   </module>
 
-  <!-- Projet BioYatea results -->
-  <module id="bioyatea-projection" class="YateaProjector">
+  <!-- Projet Yatea results -->
+  <module id="yatea-projection" class="YateaTermsProjector">
     <targetLayerName>yateaTerms</targetLayerName>
-    <!--<yateaFile inhibitCheck="true">words_prepro/default/xml/candidates_pp.xml</yateaFile>-->
-    <yateaFile inhibitCheck="yes">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile> <!-- ??? -->
+    <yateaFile inhibitCheck="yes">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
     <subject layer="words"/>
+    <termLemma>lemma</termLemma>
   </module>
 
   <!-- Generate lemmatized string for predicted habitats and for yatea terms-->
@@ -531,7 +531,7 @@
     <setFeatures/>
     </module>
    <!-- map some of the living organisms to more specific concepts -->
-  <module id="map-living-organisms" class="FileMapper2">
+  <module id="map-living-organisms" class="FileMapper">
     <mappingFile>resources/NCBI_taxa_ontobiotope.txt</mappingFile>
     <target>documents.sections.layer:habitats[@taxid != ""]</target>
     <form>@taxid</form>

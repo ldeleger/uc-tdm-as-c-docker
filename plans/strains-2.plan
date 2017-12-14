@@ -213,7 +213,7 @@
       <targetLayerName>finalStrains</targetLayerName>
     </module>
 
-    <module id="projectStrains" class="ElementProjector2">
+    <module id="projectStrains" class="ElementProjector">
       <caseInsensitive/>
       <targetLayerName>newStrains</targetLayerName>
       <entries>documents.sections.layer:finalStrains</entries>
@@ -272,7 +272,7 @@
       </actions>
     </module>
 
-    <module id="projectAppositions" class="ElementProjector2">
+    <module id="projectAppositions" class="ElementProjector">
       <!-- <caseInsensitive/> -->
       <targetLayerName>appos</targetLayerName>
       <entries>documents.sections.layer:appositions</entries>

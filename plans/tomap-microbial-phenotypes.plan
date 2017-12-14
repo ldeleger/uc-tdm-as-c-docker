@@ -163,12 +163,12 @@
     <removeFromLayer/>
   </module>
 
-  <!-- Projet BioYatea results -->
-  <module id="bioyatea-projection" class="YateaProjector">
+  <!-- Projet Yatea results -->
+  <module id="yatea-projection" class="YateaTermsProjector">
     <targetLayerName>yateaTerms</targetLayerName>
-    <!--<yateaFile inhibitCheck="true">words_prepro/default/xml/candidates_pp.xml</yateaFile>-->
-    <yateaFile inhibitCheck="yes">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile> <!-- ??? -->
+    <yateaFile inhibitCheck="yes">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
     <subject layer="words"/>
+    <termLemma>lemma</termLemma>
   </module>
 
   <!-- Generate lemmatized string for predicted phenotypes and for yatea terms-->

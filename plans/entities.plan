@@ -1,7 +1,7 @@
 <alvisnlp-plan id="entities">
 
   <sequence id="organisms">
-    <module id="dict" class="SimpleProjector2">
+    <module id="dict" class="TabularProjector">
       <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
       <targetLayerName>taxa</targetLayerName>
       <dictFile>resources/taxa+id_full.txt</dictFile>
@@ -15,7 +15,7 @@
     </module>
 
     <sequence id="microorganisms">
-      <module id="taxids" class="FileMapper2">
+      <module id="taxids" class="FileMapper">
     	<target>documents.sections.layer:taxa</target>
     	<form>@taxid</form>
 	<mappingFile>resources/taxid_microorganisms.txt</mappingFile>
@@ -40,7 +40,7 @@
   </sequence>
 
 <!-- Project stopwords -->
-<module id="stopwordsprojector" class="SimpleProjector2">
+<module id="stopwordsprojector" class="TabularProjector">
   <dictFile>resources/stopwords_EN.txt</dictFile>
   <targetLayerName>stopwords</targetLayerName>
   <valueFeatures>stopwords</valueFeatures>
@@ -48,7 +48,7 @@
   <caseInsensitive>true</caseInsensitive>
 </module>
 
-<module id="stopwordsprojector-microorganism" class="SimpleProjector2">
+<module id="stopwordsprojector-microorganism" class="TabularProjector">
   <dictFile>resources/microorganism_stopwords.txt</dictFile>
   <targetLayerName>microorganism-stopwords</targetLayerName>
   <valueFeatures>stopwords</valueFeatures>
@@ -123,7 +123,7 @@
   <import file="plans/strains-2.plan"/>
 
   <sequence id="microorganisms-after-strains">
-    <module id="taxids" class="FileMapper2">
+    <module id="taxids" class="FileMapper">
       <target>documents.sections.layer:taxa</target>
       <form>@taxid</form>
       <!--<operator>prefix</operator>-->
@@ -163,7 +163,7 @@
 
   <!-- Project process lexicon -->
 
-  <module id="dict" class="SimpleProjector2">
+  <module id="dict" class="TabularProjector">
     <targetLayerName>food-process</targetLayerName>
     <dictFile>resources/food-process-lexicon.txt</dictFile>
     <matchStartCaseInsensitive/>
@@ -171,7 +171,7 @@
     <valueFeatures>string,token,lem,concept-id</valueFeatures>
     <subject layer="words" feature="lemma"/>
   </module>
-  <module id="dict-2" class="SimpleProjector2">
+  <module id="dict-2" class="TabularProjector">
     <targetLayerName>food-process2</targetLayerName>
     <dictFile>resources/food-process-lexicon.txt</dictFile>
     <matchStartCaseInsensitive/>
@@ -209,7 +209,7 @@
     </module>
 
     <!-- Project variant lexicon on words and add variant feature -->
-    <module id="variant-projection" class="SimpleProjector2">
+    <module id="variant-projection" class="TabularProjector">
       <dictFile>resources/noun_adj_and_spelling_variants</dictFile>
       <targetLayerName>variants</targetLayerName>
       <keyIndex>0</keyIndex>

@@ -4,12 +4,12 @@
   <alias module="read" param="sourcePath"/>
   </param>
   
-  <module id="read" class="XMLReader2">
+  <module id="read" class="XMLReader">
     <sourcePath>test.xml</sourcePath>
     <xslTransform>plans/microbes-pubmed2alvisnlp.xslt</xslTransform>
   </module>
 
-  <mesh-path class="FileMapper2">
+  <mesh-path class="FileMapper">
     <mappingFile>resources/2017MeshTree.txt</mappingFile>
     <target>documents.(sections:mesh|sections:chemical)</target>
     <form>@UI</form>

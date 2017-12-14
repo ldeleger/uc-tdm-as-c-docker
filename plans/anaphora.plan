@@ -33,7 +33,7 @@
   <!-- Anaphora resolution -->
   <sequence id="coreferences">
     <sequence id="mono-anaphora">
-      <module id="anaphora" class="SimpleProjector2">
+      <module id="anaphora" class="TabularProjector">
 	<dictFile>resources/anaphoraLexicon.txt</dictFile>
 	<targetLayerName>mono-anaphora</targetLayerName>
 	<subject layer="words" feature="form"/>
@@ -264,7 +264,7 @@
 
     
     <sequence id="multi-ante-anaphora">
-      <module id="bi-anaphora" class="SimpleProjector2">
+      <module id="bi-anaphora" class="TabularProjector">
 	<dictFile>resources/biAnaphoraLexicon.txt</dictFile>
 	<targetLayerName>bi-anaphora</targetLayerName>
 	<subject layer="words" feature="form"/>
