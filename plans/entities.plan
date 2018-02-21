@@ -2,7 +2,7 @@
 
   <sequence id="organisms">
     <module id="dict" class="TabularProjector">
-      <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
+      <!-- <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter> -->
       <targetLayerName>taxa</targetLayerName>
       <dictFile>resources/taxa+id_full.txt</dictFile>
       <matchStartCaseInsensitive/>
@@ -58,7 +58,7 @@
 
   <sequence id="geo">
     <module id="stanford" class="StanfordNER">
-      <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
+      <!-- <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter> -->
       <classifierFile>/alvisnlp/psoft/stanford-ner-2014-06-16/classifiers/english.all.3class.distsim.crf.ser.gz</classifierFile>
       <labelFeatureName>stanford-label</labelFeatureName>
       <targetLayerName>stanford</targetLayerName>
@@ -237,7 +237,7 @@
 
     <!-- Run Yatea term extractor -->
     <module id="yatea" class="YateaExtractor">
-      <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
+      <!-- <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter> -->
       <workingDir>&outdir;/yatea</workingDir>
       <posFeature>tt_pos</posFeature>
       <configDir>/as-c/resources/config-habitats/</configDir>
@@ -248,7 +248,7 @@
 
     <!-- Run Yatea term extractor on variants -->
     <module id="yatea-var" class="YateaExtractor">
-      <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter>
+      <!-- <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter> -->
       <workingDir>&outdir;/yatea-var</workingDir>
       <!--<yateaExecutable>/usr/local/public/perl-5.18.0/bin/yatea</yateaExecutable>-->
       <posFeature>tt_pos</posFeature>
