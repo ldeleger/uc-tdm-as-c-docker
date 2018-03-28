@@ -238,7 +238,7 @@
     <!-- Run Yatea term extractor -->
     <module id="yatea" class="YateaExtractor">
       <!-- <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter> -->
-      <workingDir>&outdir;/yatea</workingDir>
+      <workingDir>yatea</workingDir>
       <posFeature>tt_pos</posFeature>
       <configDir>/as-c/resources/config-habitats/</configDir>
       <localeDir>/usr/share/YaTeA/locale</localeDir>
@@ -249,7 +249,7 @@
     <!-- Run Yatea term extractor on variants -->
     <module id="yatea-var" class="YateaExtractor">
       <!-- <sectionFilter>@name == "title" or @name == "abstract"</sectionFilter> -->
-      <workingDir>&outdir;/yatea-var</workingDir>
+      <workingDir>yatea-var</workingDir>
       <!--<yateaExecutable>/usr/local/public/perl-5.18.0/bin/yatea</yateaExecutable>-->
       <posFeature>tt_pos</posFeature>
       <lemmaFeature>variant</lemmaFeature>

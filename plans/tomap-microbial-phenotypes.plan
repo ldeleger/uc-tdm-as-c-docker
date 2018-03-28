@@ -2,7 +2,7 @@
   
   <!-- ToMap on lemmas -->
   <module id="tomap" class="TomapProjector">
-    <yateaFile inhibitCheck="true">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+    <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
     <targetLayerName>phenotypes</targetLayerName>
     <conceptFeature>concept-id</conceptFeature>
     <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -25,7 +25,7 @@
   <sequence id="tomap-on-alternative-lemmas">
 
     <module id="tomap" class="TomapProjector">
-      <yateaFile inhibitCheck="true">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+      <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
       <targetLayerName>phenotypes2</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -57,7 +57,7 @@
   <sequence id="tomap-no-lemmakeys">
 
     <module id="tomap" class="TomapProjector">
-      <yateaFile inhibitCheck="true">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+      <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
       <targetLayerName>phenotypes3</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -89,7 +89,7 @@
   <sequence id="tomap-on-variants">
 
     <module id="tomap" class="TomapProjector">
-      <yateaFile inhibitCheck="true">&outdir;/yatea-var/corpus/default/xml/candidates.xml</yateaFile>
+      <yateaFile output-feed="true">yatea-var/corpus/default/xml/candidates.xml</yateaFile>
       <targetLayerName>phenotypes4</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -121,7 +121,7 @@
   <sequence id="tomap-no-lemmakeys-word-form">
 
     <module id="tomap" class="TomapProjector">
-      <yateaFile inhibitCheck="true">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+      <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
       <targetLayerName>phenotypes5</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -166,7 +166,7 @@
   <!-- Projet Yatea results -->
   <module id="yatea-projection" class="YateaTermsProjector">
     <targetLayerName>yateaTerms</targetLayerName>
-    <yateaFile inhibitCheck="yes">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+    <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
     <subject layer="words"/>
     <termLemma>lemma</termLemma>
   </module>

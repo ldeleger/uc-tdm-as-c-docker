@@ -34,7 +34,7 @@
   <sequence id="output">
 
     <module id="microorganisms" class="TabularExport">
-      <outDir>&outdir;</outDir>
+      <outDir>.</outDir>
       <files>$</files>
       <fileName>"microorganisms.txt"</fileName>
       <lines>documents.sections.layer:microorganism</lines>
@@ -51,7 +51,7 @@
     </module>
 
     <module id="habitats" class="TabularExport">
-      <outDir>&outdir;</outDir>
+      <outDir>.</outDir>
       <files>$</files>
       <fileName>"habitats.txt"</fileName>
       <lines>documents.sections.layer:habitats</lines>
@@ -70,7 +70,7 @@
     </module>
 
     <module id="phenotypes" class="TabularExport">
-      <outDir>&outdir;</outDir>
+      <outDir>.</outDir>
       <files>$</files>
       <fileName>"phenotypes.txt"</fileName>
       <lines>documents.sections.layer:phenotypes</lines>
@@ -89,7 +89,7 @@
     </module>
 
     <module id="relations" class="TabularExport">
-      <outDir>&outdir;</outDir>
+      <outDir>.</outDir>
       <files>$</files>
       <fileName>"relations.txt"</fileName>
       <lines>documents.sections.relations:CooccurrenceLocalization.tuples</lines>
@@ -108,7 +108,7 @@
     </module>
 
     <module id="relations-pheno" class="TabularExport">
-      <outDir>&outdir;</outDir>
+      <outDir>.</outDir>
       <files>$</files>
       <fileName>"phenotype-relations.txt"</fileName>
       <lines>documents.sections.relations:PhenotypeRelation.tuples</lines>
@@ -131,7 +131,7 @@
   </sequence>
 
   <module id="index" class="AlvisIRIndexer">
-    <indexDir>&outdir;/index</indexDir>
+    <indexDir>index</indexDir>
     <tokenPositionGap>1024</tokenPositionGap>
     <fieldNames>title,abstract,author,full-author,pmid,year,journal,mesh,url</fieldNames>
     <relations>
@@ -240,7 +240,7 @@
   </module>
 
   <write class="XMIExport">
-    <outDir>&outdir;</outDir>
+    <outDir>.</outDir>
   </write>
 
 </alvisnlp-plan>

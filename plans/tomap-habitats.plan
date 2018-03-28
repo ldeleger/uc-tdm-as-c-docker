@@ -2,7 +2,7 @@
 
   <!-- ToMap on lemmas -->
   <module id="tomap" class="TomapProjector">
-    <yateaFile inhibitCheck="true">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+    <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
     <targetLayerName>habitats</targetLayerName>
     <conceptFeature>concept-id</conceptFeature>
     <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -25,7 +25,7 @@
   <sequence id="tomap-on-alternative-lemmas">
 
     <module id="tomap" class="TomapProjector">
-      <yateaFile inhibitCheck="true">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+      <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
       <targetLayerName>habitats2</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -57,7 +57,7 @@
   <sequence id="tomap-no-lemmakeys">
 
     <module id="tomap" class="TomapProjector">
-      <yateaFile inhibitCheck="true">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+      <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
       <targetLayerName>habitats3</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -88,7 +88,7 @@
   <sequence id="tomap-on-variants">
 
     <module id="tomap" class="TomapProjector">
-      <yateaFile inhibitCheck="true">&outdir;/yatea-var/corpus/default/xml/candidates.xml</yateaFile>
+      <yateaFile output-feed="true">yatea-var/corpus/default/xml/candidates.xml</yateaFile>
       <targetLayerName>habitats4</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -120,7 +120,7 @@
   <sequence id="tomap-no-lemmakeys-word-form">
 
     <module id="tomap" class="TomapProjector">
-      <yateaFile inhibitCheck="true">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+      <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
       <targetLayerName>habitats5</targetLayerName>
       <conceptFeature>concept-id</conceptFeature>
       <explanationFeaturePrefix>explain_</explanationFeaturePrefix>
@@ -193,7 +193,7 @@
   <!-- Projet Yatea results -->
   <module id="yatea-projection" class="YateaTermsProjector">
     <targetLayerName>yateaTerms</targetLayerName>
-    <yateaFile inhibitCheck="yes">&outdir;/yatea/corpus/default/xml/candidates.xml</yateaFile>
+    <yateaFile output-feed="true">yatea/corpus/default/xml/candidates.xml</yateaFile>
     <subject layer="words"/>
     <termLemma>lemma</termLemma>
   </module>
@@ -309,7 +309,7 @@
     <action>add:all-food-process</action>
     <addToLayer/>
   </module>
-  <module id="keep-highest-score" class="Action">
+  <module id="keep-highest-score-for-food" class="Action">
       <target>documents.sections.layer:all-food-process</target>
       <action>set:feat:highest(not span:all-food-process[@score > target.@score])</action>
       <setFeatures/>
@@ -333,15 +333,19 @@
 <!--     </module> -->
 <!-- </rule-for-food-corpus> -->
 
-  <!-- Choose a concept when multiple concepts have been mapped to a term -->
-
-  <sequence id="choose-candidate">
-    <!-- 1. Keep only the highest scored concepts -->
+<!-- Keep only the highest scored concepts -->
     <module id="keep-highest-score" class="Action">
       <target>documents.sections.layer:habitats</target>
       <action>set:feat:highest(not span:habitats[@score > target.@score])</action>
       <setFeatures/>
     </module>
+
+     <!-- Tag food derivatives -->
+     <import file="plans/tag-food-derivative.plan"/>
+
+  <!-- Choose a concept when multiple concepts have been mapped to a term -->
+
+  <sequence id="choose-candidate">
     <!-- 2. Select candidates which (lemmatized) string matches a concept preferred name as opposed to those that match a concept synonym (this is for disambiguation of exact matches only)-->
     <module id="select-one-candidate-1" class="Action">
       <target>documents.sections.layer:habitats[@highest == "true"]</target>
@@ -385,13 +389,13 @@
     <!-- remove terms nested in terms mapped with a more specific concept -->
     <sequence id="remove-embedded-generic">
       <module id="keep" class="Action">
-	<target>documents.sections.layer:habitats[@selected == "true"]</target>
-	<action>set:feat:no-parent(not outside:habitats[@selected == "true" and @concept-path ?= target.@concept-id])</action>
-	<setFeatures/>
+    	<target>documents.sections.layer:habitats[@selected == "true"]</target>
+    	<action>set:feat:no-parent(not outside:habitats[@selected == "true" and @concept-path ?= target.@concept-id])</action>
+    	<setFeatures/>
       </module>
       <module id="delete" class="Action">
-	<target>documents.sections.layer:habitats[@no-parent == "false"]</target>
-	<action>remove:habitats</action>
+    	<target>documents.sections.layer:habitats[@no-parent == "false"]</target>
+    	<action>remove:habitats</action>
       <removeFromLayer/>
       </module>
     </sequence>
@@ -399,13 +403,13 @@
     <!-- remove terms nested in terms with the same (significant) head -->
     <sequence id="remove-embedded-in-term-with-same-significant-head">
       <module id="keep" class="Action">
-	<target>documents.sections.layer:habitats[@selected == "true"]</target>
-	<action>set:feat:diff-head(not outside:habitats[@selected == "true" and @explain_significant-head == target.@explain_significant-head and not @explain_significant-head == ""])</action>
-	<setFeatures/>
+    	<target>documents.sections.layer:habitats[@selected == "true"]</target>
+    	<action>set:feat:diff-head(not outside:habitats[@selected == "true" and @explain_significant-head == target.@explain_significant-head and not @explain_significant-head == ""])</action>
+    	<setFeatures/>
       </module>
       <module id="delete" class="Action">
-	<target>documents.sections.layer:habitats[@diff-head == "false"]</target>
-	<action>remove:habitats</action>
+    	<target>documents.sections.layer:habitats[@diff-head == "false"]</target>
+    	<action>remove:habitats</action>
       <removeFromLayer/>
       </module>
     </sequence>
@@ -413,13 +417,13 @@
     <!-- remove terms nested in terms with the same (mono-word) head -->
     <sequence id="remove-embedded-in-term-with-same-head">
       <module id="keep" class="Action">
-	<target>documents.sections.layer:habitats[@selected == "true"]</target>
-	<action>set:feat:diff-head(not outside:habitats[@selected == "true" and @head == target.@head and not @head == ""])</action>
-	<setFeatures/>
+    	<target>documents.sections.layer:habitats[@selected == "true"]</target>
+    	<action>set:feat:diff-head(not outside:habitats[@selected == "true" and @head == target.@head and not @head == ""])</action>
+    	<setFeatures/>
       </module>
       <module id="delete" class="Action">
-	<target>documents.sections.layer:habitats[@diff-head != "true"]</target>
-	<action>remove:habitats</action>
+    	<target>documents.sections.layer:habitats[@diff-head != "true"]</target>
+    	<action>remove:habitats</action>
       <removeFromLayer/>
       </module>
     </sequence>
@@ -567,6 +571,14 @@
 
   <!-- Tag food processes -->
   <import file="plans/tag-food-process.plan"/>
+
+  <!-- add food derivatives -->
+  <module id="add-fd" class="Action">
+      <target>documents.sections.layer:food-derivative</target>
+      <action>set:feat:selected("true") | add:habitats</action>
+      <addToLayer/>
+      <setFeatures/>
+  </module>
 
 <!-- Add concept-path in case some are missing -->
     <module id="concept-path" class="OBOMapper">
