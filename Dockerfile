@@ -1,5 +1,5 @@
 # Pull AlvisNLP image
-FROM bibliome/alvisengine:2.1.2
+FROM bibliome/alvisengine
 
 WORKDIR /alvisnlp/psoft
 
