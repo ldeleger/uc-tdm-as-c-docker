@@ -1,0 +1,47 @@
+<alvisnlp-plan id="food-derivative-rules">
+
+
+  <!-- Get food overlapping prepared food -->
+  <module id="get-food" class="Action">
+    <target>documents.sections.layer:habitats[nav:features:concept-path[@value =~ "/OBT:000236/" and not nav:features:concept-path[@value =~ "/OBT:000208/"]] and outside:habitats[nav:features:concept-path[@value =~ "/OBT:000208/"]]]</target>
+    <action>add:food-overlap</action>
+    <addToLayer/>
+  </module>
+
+  <!-- Choose one -->  
+   <module id="tag-most-generic" class="Action">
+    <target>documents.sections.layer:food-overlap</target>
+    <action>set:feat:generic(not span:food-overlap[str:len(target.@concept-path) > str:len(@concept-path)])</action>
+    <setFeatures/>
+   </module>
+    <module id="temp-id" class="Action">
+      <target>documents.sections</target>
+      <action>id:enumerate:tmpid(sort:sval(layer:food-overlap[@generic == "true"],@concept-name))</action>
+      <setFeatures/>
+    </module>
+    <module id="select-one-candidate" class="Action">
+      <target>documents.sections.layer:food-overlap[@generic == "true"]</target>
+      <action>set:feat:keep(not span:food-overlap[@generic == "true" and target.@tmpid > @tmpid])</action>
+      <setFeatures/>
+    </module>
+    <module id="delete-not-selected" class="Action">
+      <target>documents.sections.layer:food-overlap[not @keep == "true"]</target>
+      <action>remove:food-overlap</action>
+      <removeFromLayer/>
+    </module>
+    <module id="overlaps" class="RemoveOverlaps">
+      <layerName>food-overlap</layerName>
+    </module>
+    
+    <module id="create-food-derivative" class="Action">
+      <target>documents.sections.layer:food-overlap</target>
+      <action>
+	nav:outside:habitats[nav:features:concept-path[@value =~ "/OBT:000208/"]] as process.
+	section.new:annotation:food-derivative(process.start,process.end).clone:features(target)</action>
+      <addToLayer/>
+      <setFeatures/>
+      <createAnnotations/>
+    </module>
+
+   
+</alvisnlp-plan>
