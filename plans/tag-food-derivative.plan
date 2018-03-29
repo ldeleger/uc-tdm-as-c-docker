@@ -42,6 +42,9 @@
       <setFeatures/>
       <createAnnotations/>
     </module>
-
+    
+    <module id="overlaps2" class="RemoveOverlaps">
+      <layerName>food-derivative</layerName>
+    </module>
    
 </alvisnlp-plan>
